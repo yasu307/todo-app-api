@@ -8,11 +8,12 @@ package controllers
 
 import javax.inject._
 import play.api.mvc._
-
 import model.ViewValueHome
+import play.api.Logger
 
 @Singleton
 class HomeController @Inject()(val controllerComponents: ControllerComponents) extends BaseController {
+  val logger: Logger = Logger(this.getClass())
 
   def index() = Action { implicit req =>
     val vv = ViewValueHome(
