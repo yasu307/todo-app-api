@@ -22,7 +22,7 @@ case class Todo(
 //~~~~~~~~~~~~~~~~~~~~~~~~
 object Todo {
   val  Id = the[Identity[Id]]
-  type Id = Long @@ User
+  type Id = Long @@ Todo
   type WithNoId = Entity.WithNoId [Id, Todo]
   type EmbeddedId = Entity.EmbeddedId[Id, Todo]
 
