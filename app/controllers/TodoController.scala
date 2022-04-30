@@ -2,7 +2,7 @@ package controllers
 
 import lib.model.Todo
 import lib.persistence.onMySQL.TodoRepository
-import model.ViewValueHome
+import model.{ViewValueHome, ViewValueTodoList}
 import play.api.Logger
 import play.api.mvc.{BaseController, ControllerComponents}
 
@@ -32,6 +32,20 @@ class TodoController @Inject()(val controllerComponents: ControllerComponents)(i
       logger.debug("update: " + updatedTodo.toString)
       logger.debug("delete: " + deletedTodo.toString)
       Ok(views.html.Home(vv))
+    }
+  }
+
+  def list() = Action async{ implicit req =>
+    for{
+      allTodo <- TodoRepository.getAll()
+    }yield{
+      val vv = ViewValueTodoList(
+        title  = "Todo 一覧",
+        cssSrc = Seq("main.css"),
+        jsSrc  = Seq("main.js"),
+        allTodo = allTodo
+      )
+      Ok(views.html.todo.list(vv))
     }
   }
 }

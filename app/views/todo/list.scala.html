@@ -1,0 +1,13 @@
+@(vv: model.ViewValueTodoList)
+@common.Default(vv){
+    @for(todo <- vv.allTodo) {
+        <div class="card">
+            <div class="card_content">
+                <h2 class="card_title">@todo.v.title</h2>
+                <p class="card_body">@todo.v.body</p>
+                <p class="card_status">@todo.v.state</p>
+                <p class="card_category">@todo.v.categoryId</p>
+            </div>
+        </div>
+    }
+}
