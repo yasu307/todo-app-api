@@ -41,7 +41,7 @@ class TodoController @Inject()(val controllerComponents: ControllerComponents)(i
     }yield{
       val vv = ViewValueTodoList(
         title  = "Todo 一覧",
-        cssSrc = Seq("main.css"),
+        cssSrc = Seq("todo/todo-list.css"),
         jsSrc  = Seq("main.js"),
         allTodo = allTodo
       )
