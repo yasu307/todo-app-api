@@ -4,15 +4,15 @@ Todo一覧を表示するページ
 @(vv: model.ViewValueTodoList)
 @common.Default(vv){
   <div class="todo-list">
-      @for(todo <- vv.allTodo) {
-        <div class="todo-item">
-            <h2 class="todo-item__title">@todo.v.title</h2>
-            <div class="todo-item__sub-info">
-              <p class="todo-item__status">@todo.v.state</p>
-              <p class="todo-item__category">@todo.v.categoryId</p>
-            </div>
-            <p class="todo-item__body">@todo.v.body</p>
-        </div>
-      }
+    @for(todo <- vv.allTodo) {
+      <div class="todo-item">
+          <h2 class="todo-item__title">@todo.v.title</h2>
+          <div class="todo-item__sub-info">
+            <p class="todo-item__status">@todo.v.state</p>
+            <p class="todo-item__category">@todo.v.categoryId</p>
+          </div>
+          <p class="todo-item__body">@todo.v.body</p>
+      </div>
+    }
   </div>
 }

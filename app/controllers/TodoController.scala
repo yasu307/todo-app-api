@@ -22,13 +22,13 @@ class TodoController @Inject()(val controllerComponents: ControllerComponents)(i
 
     val todoWithNoId = Todo.apply(555L, "テキスト", "本文本文本文本文本文本文本文本文")
     for {
-      todoId <- TodoRepository.add(todoWithNoId)
-      todoFromDB <- TodoRepository.get(Todo.Id(todoId))
+      todoId      <- TodoRepository.add(todoWithNoId)
+      todoFromDB  <- TodoRepository.get(Todo.Id(todoId))
       updatedTodo <- TodoRepository.update(todoFromDB.get.map(_.copy(title="updated")))
       deletedTodo <- TodoRepository.remove(updatedTodo.get.id)
     } yield {
-      logger.debug("add: " + todoId.toString)
-      logger.debug("get: " + todoFromDB.toString)
+      logger.debug("add: "    + todoId.toString)
+      logger.debug("get: "    + todoFromDB.toString)
       logger.debug("update: " + updatedTodo.toString)
       logger.debug("delete: " + deletedTodo.toString)
       Ok(views.html.Home(vv))
@@ -40,9 +40,9 @@ class TodoController @Inject()(val controllerComponents: ControllerComponents)(i
       allTodo <- TodoRepository.getAll()
     }yield{
       val vv = ViewValueTodoList(
-        title  = "Todo 一覧",
-        cssSrc = Seq("todo/todo-list.css"),
-        jsSrc  = Seq("main.js"),
+        title   = "Todo 一覧",
+        cssSrc  = Seq("todo/todo-list.css"),
+        jsSrc   = Seq("main.js"),
         allTodo = allTodo
       )
       Ok(views.html.todo.list(vv))
