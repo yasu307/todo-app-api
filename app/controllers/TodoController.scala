@@ -1,16 +1,19 @@
 package controllers
 
-import lib.model.Todo
+import lib.model._
 import lib.persistence.onMySQL.TodoRepository
-import model.{ViewValueHome, ViewValueTodoList}
+import model._
 import play.api.Logger
-import play.api.mvc.{BaseController, ControllerComponents}
+import play.api.data.Form
+import play.api.data.Forms._
+import play.api.i18n.I18nSupport
+import play.api.mvc.{AnyContent, BaseController, ControllerComponents, Request}
 
 import javax.inject.Inject
-import scala.concurrent.ExecutionContext
+import scala.concurrent.{ExecutionContext, Future}
 
 class TodoController @Inject()(val controllerComponents: ControllerComponents)(implicit ec: ExecutionContext)
-  extends BaseController {
+  extends BaseController with I18nSupport {
   val logger: Logger = Logger(this.getClass())
 
   // to_doテーブルの操作をデバックするためのメソッド　
@@ -50,5 +53,49 @@ class TodoController @Inject()(val controllerComponents: ControllerComponents)(i
       )
       Ok(views.html.todo.list(vv))
     }
+  }
+
+  // Todo追加画面で使用するFormオブジェクト
+  val form = Form(
+    mapping(
+      "categoryId" -> longNumber(),
+      "title"      -> nonEmptyText(maxLength = 255),
+      "body"       -> text()
+    )(TodoFormData.apply)(TodoFormData.unapply)
+  )
+
+  // to_doレコードを追加するメソッド
+  def store() = Action async { implicit request: Request[AnyContent] =>
+    form.bindFromRequest().fold(
+      // 処理が失敗した場合に呼び出される関数
+      (formWithErrors: Form[TodoFormData]) => {
+        val vv = ViewValueTodoStore(
+          title  = "Todo追加画面",
+          cssSrc = Seq("todo/todo-list.css"),
+          jsSrc  = Seq("main.js"),
+          form   = formWithErrors
+        )
+        Future.successful(BadRequest(views.html.todo.store(vv)))
+      },
+      // 処理が成功した場合に呼び出される関数
+      (todoFormData: TodoFormData) => {
+        for{
+          _ <- TodoRepository.add(Todo.apply(todoFormData.categoryId, todoFormData.title, todoFormData.body))
+        } yield {
+          Redirect(routes.TodoController.list)
+        }
+      }
+    )
+  }
+
+  // to_doレコードの追加内容を入力するformを表示するメソッド
+  def register() = Action { implicit req =>
+    val vv = ViewValueTodoStore(
+      title  = "Todo追加画面",
+      cssSrc = Seq("todo/todo-list.css"),
+      jsSrc  = Seq("main.js"),
+      form   = form
+    )
+    Ok(views.html.todo.store(vv))
   }
 }

@@ -48,3 +48,10 @@ object Todo {
     )
   }
 }
+
+// Todo追加画面のフォームで使用するデータ
+case class TodoFormData(
+  categoryId: Long, //todo TodoCategoryをインポートして型を指定する必要がある？
+  title:      String,
+  body:       String
+)
