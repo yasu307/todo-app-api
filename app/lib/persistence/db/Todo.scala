@@ -39,7 +39,7 @@ case class TodoTable[P <: JdbcProfile]()(implicit val driver: P)
 
     type TableElementTuple = (
       Option[Id], Long, String, String, Status, LocalDateTime, LocalDateTime
-      )
+    )
 
     // DB <=> Scala の相互のmapping定義
     def * = (id.?, categoryId, title, body, state, updatedAt, createdAt) <> (
