@@ -1,6 +1,6 @@
 /**
  *
- * to do sample project
+ * from to do sample project
  *
  */
 package model
