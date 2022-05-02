@@ -3,7 +3,6 @@
 # https://www.playframework.com/documentation/latest/ScalaRouting
 # ~~~~
 
-# An example controller showing a sample home page
 GET     /                             controllers.HomeController.index
 GET     /todo/debug                   controllers.TodoController.debug
 GET     /todo/list                    controllers.TodoController.list

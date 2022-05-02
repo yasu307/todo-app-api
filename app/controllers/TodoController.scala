@@ -13,6 +13,8 @@ class TodoController @Inject()(val controllerComponents: ControllerComponents)(i
   extends BaseController {
   val logger: Logger = Logger(this.getClass())
 
+  // to_doテーブルの操作をデバックするためのメソッド　
+  // テーブル操作の結果はlogに出力する
   def debug() = Action async{ implicit req =>
     val vv = ViewValueHome(
       title  = "Home",
@@ -35,6 +37,7 @@ class TodoController @Inject()(val controllerComponents: ControllerComponents)(i
     }
   }
 
+  // to_doテーブルのレコード一覧を表示するメソッド
   def list() = Action async{ implicit req =>
     for{
       allTodo <- TodoRepository.getAll()

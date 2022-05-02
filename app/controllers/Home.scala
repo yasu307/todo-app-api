@@ -1,6 +1,6 @@
 /**
  *
- * to do sample project
+ * from to do sample project
  *
  */
 
@@ -15,6 +15,7 @@ import play.api.Logger
 class HomeController @Inject()(val controllerComponents: ControllerComponents) extends BaseController {
   val logger: Logger = Logger(this.getClass())
 
+  // Home画面を表示するメソッド
   def index() = Action { implicit req =>
     val vv = ViewValueHome(
       title  = "Home",

@@ -1,5 +1,6 @@
 @import "../main.scss";
 
+/* 一つのtodoを表示するブロック */
 .todo-item{
   box-shadow: 0 0 4px gray;
   margin: 15px; /*Blockにmarginを設定することになるのでよくない？*/
