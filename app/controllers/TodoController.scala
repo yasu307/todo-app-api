@@ -2,10 +2,11 @@ package controllers
 
 import lib.model._
 import lib.persistence.onMySQL.TodoRepository
-import model._
+import model.view.ViewValues.{ViewValueHome, ViewValueTodoList, ViewValueTodoStore}
+import model.view.FormData.TodoFormData
+
 import play.api.Logger
 import play.api.data.Form
-import play.api.data.Forms._
 import play.api.i18n.I18nSupport
 import play.api.mvc.{AnyContent, BaseController, ControllerComponents, Request}
 
@@ -55,18 +56,9 @@ class TodoController @Inject()(val controllerComponents: ControllerComponents)(i
     }
   }
 
-  // Todo追加画面で使用するFormオブジェクト
-  val form = Form(
-    mapping(
-      "categoryId" -> longNumber(),
-      "title"      -> nonEmptyText(maxLength = 255),
-      "body"       -> text()
-    )(TodoFormData.apply)(TodoFormData.unapply)
-  )
-
   // to_doレコードを追加するメソッド
   def store() = Action async { implicit request: Request[AnyContent] =>
-    form.bindFromRequest().fold(
+    TodoFormData.form.bindFromRequest().fold(
       // 処理が失敗した場合に呼び出される関数
       (formWithErrors: Form[TodoFormData]) => {
         val vv = ViewValueTodoStore(
@@ -94,7 +86,7 @@ class TodoController @Inject()(val controllerComponents: ControllerComponents)(i
       title  = "Todo追加画面",
       cssSrc = Seq("todo/todo-list.css"),
       jsSrc  = Seq("main.js"),
-      form   = form
+      form   = TodoFormData.form
     )
     Ok(views.html.todo.store(vv))
   }

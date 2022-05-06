@@ -1,7 +1,7 @@
 @*
 Todo一覧を表示するページ
 *@
-@(vv: model.ViewValueTodoList)
+@(vv: model.view.ViewValues.ViewValueTodoList)
 @common.Default(vv){
   <div class="todo-list">
     @for(todo <- vv.allTodo) {
