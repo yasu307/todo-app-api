@@ -6,7 +6,7 @@
 
 package controllers
 
-import model.view.ViewValues.ViewValueHome
+import model.view.viewvalues.ViewValueHome
 import javax.inject._
 import play.api.mvc._
 import play.api.Logger

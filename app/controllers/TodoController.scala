@@ -2,8 +2,8 @@ package controllers
 
 import lib.model._
 import lib.persistence.onMySQL.TodoRepository
-import model.view.ViewValues.{ViewValueHome, ViewValueTodoList, ViewValueTodoStore}
-import model.view.FormData.TodoFormData
+import model.view.viewvalues.{ViewValueHome, ViewValueTodoList, ViewValueTodoStore}
+import model.view.formdata.TodoFormData
 
 import play.api.Logger
 import play.api.data.Form
