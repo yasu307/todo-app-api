@@ -5,7 +5,13 @@
 
 GET     /                             controllers.HomeController.index
 GET     /todo/debug                   controllers.TodoController.debug
+
+# Todoの一覧表示画面
 GET     /todo/list                    controllers.TodoController.list
+
+# Todoの追加画面
+GET     /todo/store                   controllers.TodoController.register
+POST    /todo/store                   controllers.TodoController.store
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file                 controllers.Assets.versioned(path="/public", file: Asset)

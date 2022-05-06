@@ -3,7 +3,7 @@
  * from to do sample project
  *
  */
-package model
+package model.view.ViewValues
 
 /**
  * 全ページに最低限必要な要素をtrait化。親のhtmlは引数でこのtraitを受け取ることで

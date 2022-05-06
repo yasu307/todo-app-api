@@ -6,9 +6,9 @@
 
 package controllers
 
+import model.view.viewvalues.ViewValueHome
 import javax.inject._
 import play.api.mvc._
-import model.ViewValueHome
 import play.api.Logger
 
 @Singleton
