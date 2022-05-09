@@ -1,0 +1,34 @@
+@*
+Todo更新画面
+*@
+@import model.view.viewvalues.ViewValueTodoEdit
+@(vv: ViewValueTodoEdit)(implicit messageProvider: MessagesProvider,  requestHeader: RequestHeader)
+@common.Default(vv){
+  @* 追加するTodoの入力フォーム *@
+  @helper.form(action = routes.TodoController.update(vv.todoId)){
+    @helper.CSRF.formField
+    @* カテゴリーIdの入力欄(longNumber) *@
+    @helper.inputText(
+      vv.form("categoryId"),
+      '_label -> "カテゴリーid", '_showConstraints -> false
+    )
+    @* Todoタイトルの入力欄(NonEmptyText) *@
+    @helper.inputText(
+      vv.form("title"),
+      '_label -> "Todoタイトル", '_showConstraints -> false
+    )
+    @* Todo本文の入力欄(text) *@
+    @helper.textarea(
+      vv.form("body"),
+      'rows -> 3, 'cols -> 40,
+      '_label -> "Todo本文", '_showConstraints -> false
+    )
+    @* Todoステータスのラジオボタン *@
+    @helper.inputRadioGroup(
+      vv.form("state"),
+      options = Seq("0"->"TODO", "1"->"WORKING", "2"->"COMPLETED"),
+      '_label -> "ステータス", '_showConstraints -> false
+    )
+    <input type="submit" value="更新">
+  }
+}

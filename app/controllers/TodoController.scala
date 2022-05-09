@@ -2,8 +2,8 @@ package controllers
 
 import lib.model._
 import lib.persistence.onMySQL.TodoRepository
-import model.view.viewvalues.{ViewValueHome, ViewValueTodoList, ViewValueTodoStore}
-import model.view.formdata.TodoFormData
+import model.view.viewvalues.{ViewValueHome, ViewValueTodoList, ViewValueTodoStore, ViewValueTodoEdit}
+import model.view.formdata.{TodoEditFormData, TodoFormData}
 
 import play.api.Logger
 import play.api.data.Form
@@ -52,7 +52,7 @@ class TodoController @Inject()(val controllerComponents: ControllerComponents)(i
         jsSrc   = Seq("main.js"),
         allTodo = allTodo
       )
-      Ok(views.html.todo.list(vv))
+      Ok(views.html.todo.List(vv))
     }
   }
 
@@ -89,5 +89,56 @@ class TodoController @Inject()(val controllerComponents: ControllerComponents)(i
       form   = TodoFormData.form
     )
     Ok(views.html.todo.store(vv))
+  }
+
+  // to_doの内容を編集する画面を表示するメソッド
+  // todoをそのままeditの引数にしなかった理由 -> routes参照
+  def edit(todoId: Long) = Action async { implicit req =>
+    for{
+      todoOpt <- TodoRepository.get(Todo.Id(todoId))
+    }yield{
+      todoOpt match {
+        // todoIdに対応するtodoレコードがあればそのtodoを更新する画面に遷移する
+        case Some(todo) =>
+          val vv = ViewValueTodoEdit(
+            title  = "Todo更新画面",
+            cssSrc = Seq("main.css"),
+            jsSrc  = Seq("main.js"),
+            form   = TodoEditFormData.fillFromTodo(todo),
+            todoId = todoId
+          )
+          Ok(views.html.todo.Edit(vv))
+        // todoIdに対応するtodoレコードが取得できなければTodo一覧表示画面に遷移する
+        case _ =>
+          // NotFound画面に置き換える
+          Redirect(routes.TodoController.list())
+      }
+    }
+  }
+
+  // 既存のto_doレコードを更新するメソッド
+  def update(todoId: Long) = Action async { implicit req =>
+    TodoEditFormData.form.bindFromRequest().fold(
+      formWithErrors => {
+        val vv = ViewValueTodoEdit(
+          title = "Home",
+          cssSrc = Seq("main.css"),
+          jsSrc = Seq("main.js"),
+          form = formWithErrors,
+          todoId = todoId
+        )
+        Future.successful(BadRequest(views.html.todo.Edit(vv)))
+      },
+      todoEditFormData => {
+        for{
+          count <- TodoRepository.updateFromId(Todo.Id(todoId), todoEditFormData.categoryId, todoEditFormData.title, todoEditFormData.body, todoEditFormData.state)
+        } yield {
+          count match{
+            case None => Redirect(routes.TodoController.list)
+            case _ => Redirect(routes.TodoController.list)
+          }
+        }
+      }
+    )
   }
 }

@@ -12,6 +12,13 @@ Todo一覧を表示するページ
             <p class="todo-item__category">@todo.v.categoryId</p>
           </div>
           <p class="todo-item__body">@todo.v.body</p>
+          <div class="todo-item__footer">
+            @* todoの内容を更新するボタン *@
+            @* todoをそのままeditの引数にしなかった理由 -> routes参照　*@
+            <a class="todo-item__edit" href="@routes.TodoController.edit(todo.v.id.getOrElse(0))">
+              edit
+            </a>
+          </div>
       </div>
     }
   </div>
