@@ -123,7 +123,7 @@ class TodoController @Inject()(val controllerComponents: ControllerComponents)(i
     TodoEditFormData.form.bindFromRequest().fold(
       formWithErrors => {
         val vv = ViewValueTodoEdit(
-          title     = "Home",
+          title     = "Todo更新画面",
           cssSrc    = Seq("main.css"),
           jsSrc     = Seq("main.js"),
           form      = formWithErrors,
