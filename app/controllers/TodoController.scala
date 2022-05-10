@@ -134,7 +134,7 @@ class TodoController @Inject()(val controllerComponents: ControllerComponents)(i
       },
       todoEditFormData => {
         for{
-          count <- TodoRepository.updateFromId(Todo.Id(todoId), todoEditFormData.categoryId, todoEditFormData.title, todoEditFormData.body, todoEditFormData.state)
+          count <- TodoRepository.updateById(Todo.Id(todoId), todoEditFormData.categoryId, todoEditFormData.title, todoEditFormData.body, todoEditFormData.state)
         } yield {
           count match{
             case None => Redirect(routes.TodoController.list)
