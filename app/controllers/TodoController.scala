@@ -4,6 +4,7 @@ import lib.model._
 import lib.persistence.onMySQL.TodoRepository
 import model.view.viewvalues.{ViewValueHome, ViewValueTodoList, ViewValueTodoStore, ViewValueTodoEdit}
 import model.view.formdata.{TodoEditFormData, TodoFormData}
+import model.controller.options.TodoStatusOptions
 
 import play.api.Logger
 import play.api.data.Form
@@ -101,11 +102,12 @@ class TodoController @Inject()(val controllerComponents: ControllerComponents)(i
         // todoIdに対応するtodoレコードがあればそのtodoを更新する画面に遷移する
         case Some(todo) =>
           val vv = ViewValueTodoEdit(
-            title  = "Todo更新画面",
-            cssSrc = Seq("main.css"),
-            jsSrc  = Seq("main.js"),
-            form   = TodoEditFormData.fillFromTodo(todo),
-            todoId = todoId
+            title     = "Todo更新画面",
+            cssSrc    = Seq("main.css"),
+            jsSrc     = Seq("main.js"),
+            form      = TodoEditFormData.fillFromTodo(todo),
+            statusOpt = TodoStatusOptions.todoStatusOpt,
+            todoId    = todoId
           )
           Ok(views.html.todo.Edit(vv))
         // todoIdに対応するtodoレコードが取得できなければTodo一覧表示画面に遷移する
@@ -121,11 +123,12 @@ class TodoController @Inject()(val controllerComponents: ControllerComponents)(i
     TodoEditFormData.form.bindFromRequest().fold(
       formWithErrors => {
         val vv = ViewValueTodoEdit(
-          title = "Home",
-          cssSrc = Seq("main.css"),
-          jsSrc = Seq("main.js"),
-          form = formWithErrors,
-          todoId = todoId
+          title     = "Home",
+          cssSrc    = Seq("main.css"),
+          jsSrc     = Seq("main.js"),
+          form      = formWithErrors,
+          statusOpt = TodoStatusOptions.todoStatusOpt,
+          todoId    = todoId
         )
         Future.successful(BadRequest(views.html.todo.Edit(vv)))
       },

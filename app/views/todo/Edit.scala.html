@@ -26,7 +26,7 @@ Todo更新画面
     @* Todoステータスのラジオボタン *@
     @helper.inputRadioGroup(
       vv.form("state"),
-      options = Seq("0"->"TODO", "1"->"WORKING", "2"->"COMPLETED"),
+      options = vv.statusOpt,
       '_label -> "ステータス", '_showConstraints -> false
     )
     <input type="submit" value="更新">
