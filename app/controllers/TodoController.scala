@@ -112,8 +112,7 @@ class TodoController @Inject()(val controllerComponents: ControllerComponents)(i
           Ok(views.html.todo.Edit(vv))
         // todoIdに対応するtodoレコードが取得できなければTodo一覧表示画面に遷移する
         case _ =>
-          // NotFound画面に置き換える
-          Redirect(routes.TodoController.list())
+          NotFound(views.html.error.page404())
       }
     }
   }
@@ -137,8 +136,8 @@ class TodoController @Inject()(val controllerComponents: ControllerComponents)(i
           count <- TodoRepository.updateById(Todo.Id(todoId), todoEditFormData.categoryId, todoEditFormData.title, todoEditFormData.body, todoEditFormData.state)
         } yield {
           count match{
-            case None => Redirect(routes.TodoController.list)
-            case _ => Redirect(routes.TodoController.list)
+            case None => NotFound(views.html.error.page404())
+            case _    => Redirect(routes.TodoController.list)
           }
         }
       }
