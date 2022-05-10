@@ -64,11 +64,11 @@ class TodoController @Inject()(val controllerComponents: ControllerComponents)(i
       (formWithErrors: Form[TodoFormData]) => {
         val vv = ViewValueTodoStore(
           title  = "Todo追加画面",
-          cssSrc = Seq("todo/todo-list.css"),
+          cssSrc = Seq("todo/todo-store.css"),
           jsSrc  = Seq("main.js"),
           form   = formWithErrors
         )
-        Future.successful(BadRequest(views.html.todo.store(vv)))
+        Future.successful(BadRequest(views.html.todo.Store(vv)))
       },
       // 処理が成功した場合に呼び出される関数
       (todoFormData: TodoFormData) => {
@@ -85,11 +85,11 @@ class TodoController @Inject()(val controllerComponents: ControllerComponents)(i
   def register() = Action { implicit req =>
     val vv = ViewValueTodoStore(
       title  = "Todo追加画面",
-      cssSrc = Seq("todo/todo-list.css"),
+      cssSrc = Seq("todo/todo-store.css"),
       jsSrc  = Seq("main.js"),
       form   = TodoFormData.form
     )
-    Ok(views.html.todo.store(vv))
+    Ok(views.html.todo.Store(vv))
   }
 
   // to_doの内容を編集する画面を表示するメソッド
@@ -103,7 +103,7 @@ class TodoController @Inject()(val controllerComponents: ControllerComponents)(i
         case Some(todo) =>
           val vv = ViewValueTodoEdit(
             title     = "Todo更新画面",
-            cssSrc    = Seq("main.css"),
+            cssSrc    = Seq("todo/todo-edit.css"),
             jsSrc     = Seq("main.js"),
             form      = TodoEditFormData.fillFromTodo(todo),
             statusOpt = TodoStatusOptions.todoStatusOpt,
@@ -123,7 +123,7 @@ class TodoController @Inject()(val controllerComponents: ControllerComponents)(i
       formWithErrors => {
         val vv = ViewValueTodoEdit(
           title     = "Todo更新画面",
-          cssSrc    = Seq("main.css"),
+          cssSrc    = Seq("todo/todo-edit.css"),
           jsSrc     = Seq("main.js"),
           form      = formWithErrors,
           statusOpt = TodoStatusOptions.todoStatusOpt,
