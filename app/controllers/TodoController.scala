@@ -1,11 +1,11 @@
 package controllers
 
+import ixias.model.Entity.EmbeddedId
 import lib.model._
 import lib.persistence.onMySQL.TodoRepository
-import model.view.viewvalues.{ViewValueHome, ViewValueTodoList, ViewValueTodoStore, ViewValueTodoEdit}
+import model.view.viewvalues.{ViewValueHome, ViewValueTodoEdit, ViewValueTodoList, ViewValueTodoStore}
 import model.view.formdata.{TodoEditFormData, TodoFormData}
 import model.controller.options.TodoStatusOptions
-
 import play.api.Logger
 import play.api.data.Form
 import play.api.i18n.I18nSupport
@@ -133,7 +133,7 @@ class TodoController @Inject()(val controllerComponents: ControllerComponents)(i
       },
       todoEditFormData => {
         for{
-          count <- TodoRepository.updateById(Todo.Id(todoId), todoEditFormData.categoryId, todoEditFormData.title, todoEditFormData.body, todoEditFormData.state)
+          count <- TodoRepository.update(Todo(Todo.Id(todoId), todoEditFormData.categoryId, todoEditFormData.title, todoEditFormData.body, todoEditFormData.state))
         } yield {
           count match{
             case None => NotFound(views.html.error.page404())

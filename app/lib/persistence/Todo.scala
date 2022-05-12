@@ -55,22 +55,6 @@ case class TodoRepository[P <: JdbcProfile]()(implicit val driver: P)
     }
 
   /**
-   * Update Todo Data from todoId
-   */
-  def updateById(todoId: Todo.Id, categoryId: Long, title: String, body: String, state: Todo.Status): Future[Option[EntityEmbeddedId]] ={
-    RunDBAction(TodoTable) { slick =>
-      val row = slick.filter(_.id === todoId)
-      for {
-        old <- row.result.headOption
-        _   <- old match {
-          case None    => DBIO.successful(0)
-          case Some(_) => row.map(r => (r.categoryId, r.title, r.body, r.state)).update(categoryId, title, body, state)
-        }
-      } yield old
-    }
-  }
-
-  /**
    * Delete Todo Data
    */
   def remove(id: Id): Future[Option[EntityEmbeddedId]] =

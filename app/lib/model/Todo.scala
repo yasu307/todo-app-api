@@ -47,4 +47,17 @@ object Todo {
       )
     )
   }
+
+  // EmbeddedIdを作成するメソッド
+  def apply(todoId: Todo.Id, categoryId: Long, title: String, body: String, state: Todo.Status): EmbeddedId = {
+    new Entity.EmbeddedId(
+      new Todo(
+        id         = Some(todoId),
+        categoryId = categoryId,
+        title      = title,
+        body       = body,
+        state      = state,
+      )
+    )
+  }
 }
