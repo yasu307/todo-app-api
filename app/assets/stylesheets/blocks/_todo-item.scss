@@ -1,5 +1,3 @@
-@import "../main.scss";
-
 /* 一つのtodoを表示するブロック */
 .todo-item{
   box-shadow: 0 0 4px gray;
@@ -30,22 +28,5 @@
 
   &__edit-btn{
     color: black;
-  }
-}
-
-.todo-list{
-  // store-linkをcontents areaに含めるように
-  display: flow-root;
-
-  &__store-link{
-    // todo-listに粘着表示するように
-    position: sticky;
-    bottom: 40px;
-    right: 40px;
-
-    float: right;
-    margin: 40px;
-    color: black;
-    font-size: 50px;
   }
 }

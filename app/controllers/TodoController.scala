@@ -23,7 +23,7 @@ class TodoController @Inject()(val controllerComponents: ControllerComponents)(i
   def debug() = Action async{ implicit req =>
     val vv = ViewValueHome(
       title  = "Home",
-      cssSrc = Seq("main.css"),
+      cssSrc = Seq("home.css"),
       jsSrc  = Seq("main.js")
     )
 
