@@ -19,7 +19,7 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
   def index() = Action { implicit req =>
     val vv = ViewValueHome(
       title  = "Home",
-      cssSrc = Seq("main.css"),
+      cssSrc = Seq("home.css"),
       jsSrc  = Seq("main.js")
     )
     Ok(views.html.Home(vv))
