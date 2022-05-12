@@ -13,14 +13,13 @@ case class TodoEditFormData(
 )
 
 object TodoEditFormData {
-  import model.controller.formatter.implicits.StatusFormatter
   // Todo更新画面で使用するFormオブジェクト
   val form = Form(
     mapping(
       "categoryId" -> longNumber(),
       "title"      -> nonEmptyText(maxLength = 255),
       "body"       -> text(),
-      "state"      -> of[Todo.Status],
+      "state"      -> longNumber.transform[Todo.Status](l => Todo.Status(l.toShort), _.code),
     )(TodoEditFormData.apply)(TodoEditFormData.unapply)
   )
 
