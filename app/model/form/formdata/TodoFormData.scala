@@ -1,4 +1,4 @@
-package model.view.formdata
+package model.form.formdata
 
 import play.api.data.Form
 import play.api.data.Forms._

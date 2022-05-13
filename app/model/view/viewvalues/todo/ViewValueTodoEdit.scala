@@ -1,6 +1,6 @@
 package model.view.viewvalues
 
-import model.view.formdata.TodoEditFormData
+import model.form.formdata.TodoEditFormData
 import play.api.data.Form
 
 // todo/edit(Todo更新フォーム)ページのviewvalue

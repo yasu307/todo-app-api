@@ -3,7 +3,7 @@ package controllers
 import lib.model.Todo
 import lib.persistence.onMySQL.TodoRepository
 import model.view.viewvalues.{ViewValueHome, ViewValueTodoEdit, ViewValueTodoList, ViewValueTodoStore}
-import model.view.formdata.{TodoEditFormData, TodoFormData}
+import model.form.formdata.{TodoEditFormData, TodoFormData}
 import model.controller.options.TodoStatusOptions
 import play.api.Logger
 import play.api.data.Form
