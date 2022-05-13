@@ -105,7 +105,7 @@ class TodoController @Inject()(val controllerComponents: ControllerComponents)(i
             title     = "Todo更新画面",
             cssSrc    = Seq("todo/todo-edit.css"),
             jsSrc     = Seq("main.js"),
-            form      = TodoEditFormData.fillFromTodo(todo),
+            form      = TodoEditFormData.form.fill(todo),
             statusOpt = TodoStatusOptions.todoStatusOpt,
             todoId    = todoId
           )
