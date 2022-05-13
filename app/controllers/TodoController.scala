@@ -1,7 +1,6 @@
 package controllers
 
-import ixias.model.Entity.EmbeddedId
-import lib.model._
+import lib.model.Todo
 import lib.persistence.onMySQL.TodoRepository
 import model.view.viewvalues.{ViewValueHome, ViewValueTodoEdit, ViewValueTodoList, ViewValueTodoStore}
 import model.view.formdata.{TodoEditFormData, TodoFormData}
