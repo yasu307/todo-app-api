@@ -1,21 +1,21 @@
 @*
-Todo追加画面
+Todo更新画面
 *@
-@import model.view.viewvalues.ViewValueTodoStore
-@(vv: ViewValueTodoStore)(implicit messageProvider: MessagesProvider,  requestHeader: RequestHeader)
+@import model.view.viewvalues.ViewValueTodoEdit
+@(vv: ViewValueTodoEdit)(implicit messageProvider: MessagesProvider,  requestHeader: RequestHeader)
 @common.Default(vv){
-  <div  class="store-form">
+  <div  class="edit-form">
     @* 追加するTodoの入力フォーム *@
-    @helper.form(action = routes.TodoController.store){
+    @helper.form(action = routes.TodoController.update(vv.todoId)){
       @helper.CSRF.formField
-      <div class="store-form__category-input">
+      <div class="edit-form__category-input">
         @* カテゴリーIdの入力欄(longNumber) *@
         @helper.inputText(
           vv.form("categoryId"),
           '_label -> "カテゴリーid", '_showConstraints -> false
         )
       </div>
-      <div class="store-form__title-input">
+      <div class="edit-form__title-input">
         @* Todoタイトルの入力欄(NonEmptyText) *@
         @helper.inputText(
           vv.form("title"),
@@ -23,7 +23,7 @@ Todo追加画面
           '_label -> "Todoタイトル", '_showConstraints -> false
         )
       </div>
-      <div class="store-form__body-input">
+      <div class="edit-form__body-input">
         @* Todo本文の入力欄(text) *@
         @helper.textarea(
           vv.form("body"),
@@ -31,7 +31,15 @@ Todo追加画面
           '_label -> "Todo本文", '_showConstraints -> false
         )
       </div>
-      <input class="store-form__submit-btn" type="submit" value="追加">
+      <div class="edit-form__status-raido-btn">
+        @* Todoステータスのラジオボタン *@
+        @helper.inputRadioGroup(
+          vv.form("state"),
+          options = vv.statusOpt,
+          '_label -> "ステータス", '_showConstraints -> false
+        )
+      </div>
+      <input class="edit-form__submit-btn" type="submit" value="更新">
     }
   </div>
 }

@@ -8,11 +8,22 @@ Todo一覧を表示するページ
       <div class="todo-item">
           <h2 class="todo-item__title">@todo.v.title</h2>
           <div class="todo-item__sub-info">
-            <p class="todo-item__status">@todo.v.state</p>
+            <p class="todo-item__status">@todo.v.state.name</p>
             <p class="todo-item__category">@todo.v.categoryId</p>
           </div>
           <p class="todo-item__body">@todo.v.body</p>
+          <div class="todo-item__footer">
+            @* todo更新画面へ遷移するボタン *@
+            @* todoをそのままeditの引数にしなかった理由 -> routes参照　*@
+            <a class="todo-item__edit-btn" href="@routes.TodoController.edit(todo.v.id.getOrElse(0))">
+              <i class="far fa-edit"></i>
+            </a>
+          </div>
       </div>
     }
+    @* todo追加画面へ遷移するボタン *@
+    <a class="todo-list__store-link" href="@routes.TodoController.store">
+      <i class="fas fa-plus-circle"></i>
+    </a>
   </div>
 }

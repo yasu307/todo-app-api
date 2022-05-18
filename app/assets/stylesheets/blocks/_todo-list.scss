@@ -1,0 +1,17 @@
+// Todoをリスト表示するブロック
+.todo-list{
+  // store-linkをcontents areaに含めるように
+  display: flow-root;
+
+  &__store-link{
+    // todo-listに粘着表示するように
+    position: sticky;
+    bottom: 40px;
+    right: 40px;
+
+    float: right;
+    margin: 40px;
+    color: black;
+    font-size: 50px;
+  }
+}
