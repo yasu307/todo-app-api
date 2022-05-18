@@ -18,6 +18,10 @@ Todo一覧を表示するページ
             <a class="todo-item__edit-btn" href="@routes.TodoController.edit(todo.v.id.getOrElse(0))">
               <i class="far fa-edit"></i>
             </a>
+            @* todoを削除する機能を呼び出すボタン *@
+            <a class="todo-item__delete-btn" href="@routes.TodoController.delete(todo.v.id.getOrElse(0))">
+              <i class="far fa-trash-alt"></i>
+            </a>
           </div>
       </div>
     }

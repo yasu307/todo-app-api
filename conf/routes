@@ -21,5 +21,8 @@ POST    /todo/store                   controllers.TodoController.store
 GET     /todo/edit/$todoId<[0-9]+>    controllers.TodoController.edit(todoId: Long)
 POST    /todo/edit/$todoId<[0-9]+>    controllers.TodoController.update(todoId: Long)
 
+# Todoの削除機能
+GET    /todo/delete/$todoId<[0-9]+>    controllers.TodoController.delete(todoId: Long)
+
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file                 controllers.Assets.versioned(path="/public", file: Asset)
