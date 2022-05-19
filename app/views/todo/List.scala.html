@@ -20,8 +20,9 @@ Todo一覧を表示するページ
             </a>
             @* todoを削除する機能を呼び出すボタン *@
             <div class="todo-item__delete-btn">
-              <form method = "delete" action = "@routes.TodoController.delete(todo.id)">
+              <form method = "post" action = "@routes.TodoController.delete(todo.id)">
                 @helper.CSRF.formField
+                <input type="hidden" name="_method" value="DELETE">
                 <i class="far fa-trash-alt todo-item__delete-icon"></i>
               </form>
             </div>
