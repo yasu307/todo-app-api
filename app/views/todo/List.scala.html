@@ -1,7 +1,7 @@
 @*
 Todo一覧を表示するページ
 *@
-@(vv: model.view.viewvalues.ViewValueTodoList)
+@(vv: model.view.viewvalues.ViewValueTodoList)(implicit messagesProvider: MessagesProvider, requestHeader: RequestHeader)
 @common.Default(vv){
   <div class="todo-list">
     @for(todo <- vv.allTodo) {
@@ -19,9 +19,12 @@ Todo一覧を表示するページ
               <i class="far fa-edit"></i>
             </a>
             @* todoを削除する機能を呼び出すボタン *@
-            <a class="todo-item__delete-btn" href="@routes.TodoController.delete(todo.id)">
-              <i class="far fa-trash-alt"></i>
-            </a>
+            <div class="todo-item__delete-btn">
+              @helper.form(action = routes.TodoController.delete(todo.id)) {
+                @helper.CSRF.formField
+                <i class="far fa-trash-alt todo-item__delete-icon"></i>
+              }
+            </div>
           </div>
       </div>
     }
