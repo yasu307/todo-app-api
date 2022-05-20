@@ -49,7 +49,7 @@ class TodoController @Inject()(val controllerComponents: ControllerComponents)(i
       val vv = ViewValueTodoList(
         title   = "Todo 一覧",
         cssSrc  = Seq("todo/todo-list.css"),
-        jsSrc   = Seq("main.js"),
+        jsSrc   = Seq("todo/todo-list.js"),
         allTodo = allTodo
       )
       Ok(views.html.todo.List(vv))
@@ -141,5 +141,17 @@ class TodoController @Inject()(val controllerComponents: ControllerComponents)(i
         }
       }
     )
+  }
+
+  // 既存のto_doレコードを削除するメソッド
+  def delete(todoId: Long) = Action async { implicit req =>
+    for{
+      result <- TodoRepository.remove(Todo.Id(todoId))
+    } yield {
+      result match {
+        case None => NotFound(views.html.error.page404())
+        case _    => Redirect(routes.TodoController.list)
+      }
+    }
   }
 }

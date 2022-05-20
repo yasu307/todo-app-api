@@ -1,3 +1,13 @@
+%font-awesome-link{
+  display: inline-block;
+  // リンク間の距離をとる
+  margin-right: 10px;
+  color: black;
+  // アンダーラインが表示されないように
+  text-decoration: none;
+  cursor: pointer;
+}
+
 /* 一つのtodoを表示するブロック */
 .todo-item{
   box-shadow: 0 0 4px gray;
@@ -27,6 +37,10 @@
   }
 
   &__edit-btn{
-    color: black;
+    @extend %font-awesome-link
+  }
+
+  &__delete-btn{
+    @extend %font-awesome-link
   }
 }
