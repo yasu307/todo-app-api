@@ -12,6 +12,7 @@ Category追加画面
     @* カテゴリ名の入力欄(NonEmptyText) *@
     @helper.inputText(
     vv.form("name"),
+    'size -> 40,
     '_label -> "カテゴリ名", '_showConstraints -> false
     )
   </div>
@@ -19,7 +20,7 @@ Category追加画面
     @* slugの入力欄(NonEmptyText) *@
     @helper.inputText(
     vv.form("slug"),
-    'size -> 60,
+    'size -> 20,
     '_label -> "slug", '_showConstraints -> false
     )
   </div>
