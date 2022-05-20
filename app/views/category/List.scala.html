@@ -1,0 +1,14 @@
+@*
+Category一覧を表示するページ
+*@
+@(vv: model.view.viewvalues.ViewValueCategoryList)
+@common.Default(vv){
+<div class="category-list">
+  @for(category <- vv.allCategory) {
+  <div class="category-item">
+    <h2 class="category-item__name">@category.v.name</h2>
+    <p class="category-item__slug">@category.v.slug</p>
+  </div>
+  }
+</div>
+}

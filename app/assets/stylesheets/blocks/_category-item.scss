@@ -1,0 +1,14 @@
+/* 一つのCategoryを表示するブロック */
+.category-item{
+  box-shadow: 0 0 4px gray;
+  margin: 15px; /*Blockにmarginを設定することになるのでよくない？*/
+  padding: 10px;
+
+  &__name{
+    margin-block: 0;
+  }
+
+  &__slug{
+    margin-block: 0;
+  }
+}
