@@ -1,0 +1,22 @@
+// 色を表す変数を定義
+// HTMLから値を代入できるように
+:root{
+  --color: rgb(0, 0, 0);
+}
+
+/* 一つのCategoryを表示するブロック */
+.category-item{
+  box-shadow: 0 0 4px gray;
+  margin: 15px; /*Blockにmarginを設定することになるのでよくない？*/
+  padding: 10px;
+  // 背景色をHTMLから送られてきた色に変更する
+  background-color: var(--color);
+
+  &__name{
+    margin-block: 0;
+  }
+
+  &__slug{
+    margin-block: 0;
+  }
+}

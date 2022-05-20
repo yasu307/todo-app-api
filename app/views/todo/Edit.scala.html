@@ -9,10 +9,10 @@ Todo更新画面
     @helper.form(action = routes.TodoController.update(vv.todoId)){
       @helper.CSRF.formField
       <div class="edit-form__category-input">
-        @* カテゴリーIdの入力欄(longNumber) *@
+        @* カテゴリIdの入力欄(longNumber) *@
         @helper.inputText(
           vv.form("categoryId"),
-          '_label -> "カテゴリーid", '_showConstraints -> false
+          '_label -> "カテゴリid", '_showConstraints -> false
         )
       </div>
       <div class="edit-form__title-input">
