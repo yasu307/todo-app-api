@@ -22,7 +22,6 @@ Todo一覧を表示するページ
             <div class="todo-item__delete-btn">
               @helper.form(action = routes.TodoController.delete(todo.id)) {
                 @helper.CSRF.formField
-                <input type="hidden" name="_method" value="DELETE">
                 <i class="far fa-trash-alt todo-item__delete-icon"></i>
               }
             </div>
