@@ -44,7 +44,7 @@ class CategoryController @Inject()(val controllerComponents: ControllerComponent
       allCategory <- CategoryRepository.getAll()
     } yield {
       val vv = ViewValueCategoryList(
-        title       = "Category 一覧",
+        title       = "カテゴリ一覧",
         cssSrc      = Seq("category/category-list.css"),
         jsSrc       = Seq("main.js"),
         allCategory = allCategory,
