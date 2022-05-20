@@ -1,0 +1,37 @@
+@*
+Category追加画面
+*@
+@import model.view.viewvalues.ViewValueCategoryStore
+@(vv: ViewValueCategoryStore)(implicit messageProvider: MessagesProvider,  requestHeader: RequestHeader)
+@common.Default(vv){
+<div class="category-store-form">
+  @* 追加するCategoryの入力フォーム *@
+  @helper.form(action = routes.CategoryController.store){
+  @helper.CSRF.formField
+  <div class="category-store-form__name-input">
+    @* カテゴリ名の入力欄(NonEmptyText) *@
+    @helper.inputText(
+    vv.form("name"),
+    '_label -> "カテゴリ名", '_showConstraints -> false
+    )
+  </div>
+  <div class="category-store-form__slug-input">
+    @* slugの入力欄(NonEmptyText) *@
+    @helper.inputText(
+    vv.form("slug"),
+    'size -> 60,
+    '_label -> "slug", '_showConstraints -> false
+    )
+  </div>
+  <div class="category-store-form__color-select">
+    @* カテゴリの色のラジオボタン *@
+    @helper.inputRadioGroup(
+    vv.form("color"),
+    options = vv.colorOpt,
+    '_label -> "色", '_showConstraints -> false
+    )
+  </div>
+  <input class="category-store-form__submit-btn" type="submit" value="追加">
+  }
+</div>
+}
