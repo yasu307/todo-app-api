@@ -5,7 +5,8 @@ Category一覧を表示するページ
 @common.Default(vv){
 <div class="category-list">
   @for(category <- vv.allCategory) {
-  <div class="category-item">
+  @* scssの--color変数にrgb値を代入することで色を変更 *@
+  <div class="category-item" style="--color: rgb(@category.v.color.rgb.r, @category.v.color.rgb.g, @category.v.color.rgb.b);">
     <h2 class="category-item__name">@category.v.name</h2>
     <p class="category-item__slug">@category.v.slug</p>
   </div>
