@@ -24,13 +24,18 @@ Category追加画面
     '_label -> "slug", '_showConstraints -> false
     )
   </div>
-  <div class="category-store-form__color-select">
+  <div class="category-store-form__color-input">
     @* カテゴリの色のラジオボタン *@
-    @helper.inputRadioGroup(
-    vv.form("color"),
-    options = vv.colorOpt,
-    '_label -> "色", '_showConstraints -> false
-    )
+    <dl>
+      <dt>色</dt>
+      <dd class="category-store-form__color-dd">
+        @for(color <- vv.colorValues){
+          @* helperを使用していないので制約やエラーメッセージが機能していないが、checkedを指定することでどのボタンも選択されていない状態が発生しないようにした *@
+          <input type="radio" id="color_@color.code.toString" class="category-store-form__color-btn" name="color" value=@color.code.toString @if(color.code == 0){checked}>
+          <label for="color_@color.code.toString" class="category-store-form__color-label" style="--color: @color.rgb.toString"></label>
+        }
+      </dd>
+    </dl>
   </div>
   <input class="category-store-form__submit-btn" type="submit" value="追加">
   }

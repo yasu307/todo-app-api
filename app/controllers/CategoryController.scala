@@ -2,7 +2,6 @@ package controllers
 
 import lib.model.Category
 import lib.persistence.onMySQL.CategoryRepository
-import model.controller.options.CategoryColorOptions
 import model.form.formdata.CategoryFormData
 import model.view.viewvalues.{ViewValueCategoryList, ViewValueCategoryStore, ViewValueHome}
 import play.api.Logger
@@ -62,11 +61,11 @@ class CategoryController @Inject()(val controllerComponents: ControllerComponent
       // 処理が失敗した場合に呼び出される関数
       (formWithErrors: Form[CategoryFormData]) => {
         val vv = ViewValueCategoryStore(
-          title    = "カテゴリ追加画面",
-          cssSrc   = Seq("category/category-store.css"),
-          jsSrc    = Seq("main.js"),
-          form     = formWithErrors,
-          colorOpt = CategoryColorOptions.categoryColorOpt,
+          title       = "カテゴリ追加画面",
+          cssSrc      = Seq("category/category-store.css"),
+          jsSrc       = Seq("main.js"),
+          form        = formWithErrors,
+          colorValues = Category.Color.values,
         )
         Future.successful(BadRequest(views.html.category.Store(vv)))
       },
@@ -84,11 +83,11 @@ class CategoryController @Inject()(val controllerComponents: ControllerComponent
   // to_do_categoryレコードの追加内容を入力するformを表示するメソッド
   def register() = Action { implicit req =>
     val vv = ViewValueCategoryStore(
-      title    = "カテゴリ追加画面",
-      cssSrc   = Seq("category/category-store.css"),
-      jsSrc    = Seq("main.js"),
-      form     = CategoryFormData.form,
-      colorOpt = CategoryColorOptions.categoryColorOpt,
+      title       = "カテゴリ追加画面",
+      cssSrc      = Seq("category/category-store.css"),
+      jsSrc       = Seq("main.js"),
+      form        = CategoryFormData.form,
+      colorValues = Category.Color.values,
     )
     Ok(views.html.category.Store(vv))
   }

@@ -19,6 +19,7 @@ object CategoryFormData {
       "name"  -> nonEmptyText(maxLength = 255),
       // MySQLに英数字のみ許可する制約があるが、formでもチェックしないとエラー画面に移動してしまうので追加
       "slug"  -> nonEmptyText(maxLength = 64).verifying(Constraints.pattern("""[ -~]+""".r, error = "英数字で入力してください")),
+      // formでhelperを使っていないのでこのマッピングは使用されていない？
       "color" -> longNumber.transform[Category.Color](l => Category.Color(l.toShort), _.code),
     )(CategoryFormData.apply)(CategoryFormData.unapply)
   )
