@@ -4,11 +4,12 @@
   --color: rgb(0, 0, 0);
 }
 
-// カテゴリ追加フォームを表示するブロック
-.category-store-form{
+// カテゴリ入力フォームを表示するブロック
+// 現状ではカテゴリ追加フォーム、カテゴリ更新フォームにて使用されている at 2022/05/24
+.category-form{
   &__color-dd{
     // 子要素(color-btnとcolor-label)を中央揃えで表示
-    display: flex;
+    display:     flex;
     align-items: center;
   }
 

@@ -4,11 +4,11 @@ Category追加画面
 @import model.view.viewvalues.ViewValueCategoryStore
 @(vv: ViewValueCategoryStore)(implicit messageProvider: MessagesProvider,  requestHeader: RequestHeader)
 @common.Default(vv){
-<div class="category-store-form">
+<div class="category-form">
   @* 追加するCategoryの入力フォーム *@
   @helper.form(action = routes.CategoryController.store){
   @helper.CSRF.formField
-  <div class="category-store-form__name-input">
+  <div class="category-form__name-input">
     @* カテゴリ名の入力欄(NonEmptyText) *@
     @helper.inputText(
     vv.form("name"),
@@ -16,7 +16,7 @@ Category追加画面
     '_label -> "カテゴリ名", '_showConstraints -> false
     )
   </div>
-  <div class="category-store-form__slug-input">
+  <div class="category-form__slug-input">
     @* slugの入力欄(NonEmptyText) *@
     @helper.inputText(
     vv.form("slug"),
@@ -24,20 +24,20 @@ Category追加画面
     '_label -> "slug", '_showConstraints -> false
     )
   </div>
-  <div class="category-store-form__color-input">
+  <div class="category-form__color-input">
     @* カテゴリの色のラジオボタン *@
     <dl>
       <dt>色</dt>
-      <dd class="category-store-form__color-dd">
+      <dd class="category-form__color-dd">
         @for(color <- vv.colorValues){
           @* helperを使用していないので制約やエラーメッセージが機能していないが、checkedを指定することでどのボタンも選択されていない状態が発生しないようにした *@
-          <input type="radio" id="color_@color.code.toString" class="category-store-form__color-btn" name="color" value=@color.code.toString @if(color.code == 0){checked}>
-          <label for="color_@color.code.toString" class="category-store-form__color-label" style="--color: @color.rgb.toString"></label>
+          <input type="radio" id="color_@color.code.toString" class="category-form__color-btn" name="color" value=@color.code.toString @if(color.code == 0){checked}>
+          <label for="color_@color.code.toString" class="category-form__color-label" style="--color: @color.rgb.toString"></label>
         }
       </dd>
     </dl>
   </div>
-  <input class="category-store-form__submit-btn" type="submit" value="追加">
+  <input class="category-form__submit-btn" type="submit" value="追加">
   }
 </div>
 }

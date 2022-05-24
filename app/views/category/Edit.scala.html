@@ -4,11 +4,11 @@ Category更新画面
 @import model.view.viewvalues.ViewValueCategoryEdit
 @(vv: ViewValueCategoryEdit)(implicit messageProvider: MessagesProvider,  requestHeader: RequestHeader)
 @common.Default(vv){
-<div class="category-edit-form">
+<div class="category-form">
   @* 更新するCategoryの入力フォーム *@
   @helper.form(action = routes.CategoryController.update(vv.categoryId)){
   @helper.CSRF.formField
-  <div class="category-edit-form__name-input">
+  <div class="category-form__name-input">
     @* カテゴリ名の入力欄(NonEmptyText) *@
     @helper.inputText(
     vv.form("name"),
@@ -16,7 +16,7 @@ Category更新画面
     '_label -> "カテゴリ名", '_showConstraints -> false
     )
   </div>
-  <div class="category-edit-form__slug-input">
+  <div class="category-form__slug-input">
     @* slugの入力欄(NonEmptyText) *@
     @helper.inputText(
     vv.form("slug"),
@@ -24,23 +24,23 @@ Category更新画面
     '_label -> "slug", '_showConstraints -> false
     )
   </div>
-  <div class="category-edit-form__color-input">
+  <div class="category-form__color-input">
     @* カテゴリの色のラジオボタン *@
     <dl>
       <dt>色</dt>
-      <dd class="category-edit-form__color-dd">
+      <dd class="category-form__color-dd">
         @for(color <- vv.colorValues){
         @* helperを使用していないので制約やエラーメッセージが機能していないが、checkedを指定することでどのボタンも選択されていない状態が発生しないようにした *@
-        <input type="radio" id="color_@color.code.toString" class="category-edit-form__color-btn" name="color" value=@color.code.toString
+        <input type="radio" id="color_@color.code.toString" class="category-form__color-btn" name="color" value=@color.code.toString
                @* checkedを更新前のcategoryに設定されていた色に設定 *@
                @if(color.code == vv.form("color").value.getOrElse("0").toShort){checked}>
-        <label for="color_@color.code.toString" class="category-edit-form__color-label"
+        <label for="color_@color.code.toString" class="category-form__color-label"
                style="--color: @color.rgb.toString"></label>
         }
       </dd>
     </dl>
   </div>
-  <input class="category-edit-form__submit-btn" type="submit" value="更新">
+  <input class="category-form__submit-btn" type="submit" value="更新">
   }
 </div>
 }
