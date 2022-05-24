@@ -40,7 +40,7 @@ object Category {
   case class RGB(r: Int = 0, g: Int = 0, b: Int = 0)
 
   // WithNoIdを作成するメソッド
-  def apply(name: String, slug: String, color: Color): WithNoId = {
+  def apply(name: String, slug: String, color: Category.Color): WithNoId = {
     new Entity.WithNoId(
       new Category(
         id    = None,
@@ -49,5 +49,15 @@ object Category {
         color = color,
       )
     )
+  }
+
+  // EmbeddedIdを作成するメソッド
+  def apply(categoryId: Category.Id, name: String, slug: String, color: Category.Color): EmbeddedId = {
+    new Category(
+      id    = Some(categoryId),
+      name  = name,
+      slug  = slug,
+      color = color,
+    ).toEmbeddedId
   }
 }

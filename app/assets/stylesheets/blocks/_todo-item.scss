@@ -1,12 +1,4 @@
-%font-awesome-link{
-  display: inline-block;
-  // リンク間の距離をとる
-  margin-right: 10px;
-  color: black;
-  // アンダーラインが表示されないように
-  text-decoration: none;
-  cursor: pointer;
-}
+@import "../placeholders/_font-awesome-link.scss";
 
 /* 一つのtodoを表示するブロック */
 .todo-item{

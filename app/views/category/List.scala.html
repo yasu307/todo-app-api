@@ -9,6 +9,12 @@ Category一覧を表示するページ
   <div class="category-item" style="--color: rgb(@category.v.color.rgb.r, @category.v.color.rgb.g, @category.v.color.rgb.b);">
     <h2 class="category-item__name">@category.v.name</h2>
     <p class="category-item__slug">@category.v.slug</p>
+    <div class="category-item__footer">
+      @* category更新画面へ遷移するボタン *@
+      <a class="category-item__edit-btn" href="@routes.CategoryController.edit(category.id)">
+        <i class="far fa-edit"></i>
+      </a>
+    </div>
   </div>
   }
   @* カテゴリ追加画面へ遷移するボタン *@

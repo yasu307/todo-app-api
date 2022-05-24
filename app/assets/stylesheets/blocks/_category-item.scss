@@ -1,3 +1,5 @@
+@import "../placeholders/_font-awesome-link.scss";
+
 // 色を表す変数を定義
 // HTMLから値を代入できるように
 :root{
@@ -18,5 +20,9 @@
 
   &__slug{
     margin-block: 0;
+  }
+
+  &__edit-btn{
+    @extend %font-awesome-link
   }
 }
