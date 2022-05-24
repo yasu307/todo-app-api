@@ -48,7 +48,7 @@ class CategoryController @Inject()(val controllerComponents: ControllerComponent
       val vv = ViewValueCategoryList(
         title       = "カテゴリ一覧",
         cssSrc      = Seq("category/category-list.css"),
-        jsSrc       = Seq("main.js"),
+        jsSrc       = Seq("category/category-list.js"),
         allCategory = allCategory,
       )
       Ok(views.html.category.List(vv))
@@ -141,5 +141,17 @@ class CategoryController @Inject()(val controllerComponents: ControllerComponent
         }
       }
     )
+  }
+
+  // 既存のto_do_categoryレコードを削除するメソッド
+  def delete(categoryId: Long) = Action async { implicit req =>
+    for{
+      result <- CategoryRepository.remove(Category.Id(categoryId))
+    } yield {
+      result match {
+        case None => NotFound(views.html.error.page404())
+        case _    => Redirect(routes.CategoryController.list)
+      }
+    }
   }
 }

@@ -25,4 +25,8 @@
   &__edit-btn{
     @extend %font-awesome-link
   }
+
+  &__delete-btn{
+    @extend %font-awesome-link
+  }
 }

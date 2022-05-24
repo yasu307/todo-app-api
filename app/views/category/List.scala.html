@@ -1,7 +1,7 @@
 @*
 Category一覧を表示するページ
 *@
-@(vv: model.view.viewvalues.ViewValueCategoryList)
+@(vv: model.view.viewvalues.ViewValueCategoryList)(implicit messagesProvider: MessagesProvider, requestHeader: RequestHeader)
 @common.Default(vv){
 <div class="category-list">
   @for(category <- vv.allCategory) {
@@ -14,6 +14,13 @@ Category一覧を表示するページ
       <a class="category-item__edit-btn" href="@routes.CategoryController.edit(category.id)">
         <i class="far fa-edit"></i>
       </a>
+      @* categoryを削除する機能を呼び出すボタン *@
+      <div class="category-item__delete-btn">
+        @helper.form(action = routes.CategoryController.delete(category.id)) {
+          @helper.CSRF.formField
+          <i class="far fa-trash-alt category-item__delete-icon"></i>
+        }
+      </div>
     </div>
   </div>
   }

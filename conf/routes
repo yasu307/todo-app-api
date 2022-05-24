@@ -38,5 +38,8 @@ POST    /category/store               controllers.CategoryController.store
 GET     /category/edit/$categoryId<[0-9]+>    controllers.CategoryController.edit(categoryId: Long)
 POST    /category/edit/$categoryId<[0-9]+>    controllers.CategoryController.update(categoryId: Long)
 
+# Categoryの削除機能
+POST    /category/delete/$categoryId<[0-9]+>  controllers.CategoryController.delete(categoryId: Long)
+
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file                 controllers.Assets.versioned(path="/public", file: Asset)
