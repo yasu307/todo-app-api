@@ -3,7 +3,7 @@ package controllers
 import lib.model.Category
 import lib.persistence.onMySQL.CategoryRepository
 import model.form.formdata.CategoryFormData
-import model.view.viewvalues.{ViewValueCategoryList, ViewValueCategoryStore, ViewValueHome}
+import model.view.viewvalues.{ViewValueCategoryEdit, ViewValueCategoryList, ViewValueCategoryStore, ViewValueHome}
 import play.api.Logger
 import play.api.data.Form
 import play.api.i18n.I18nSupport
@@ -90,5 +90,56 @@ class CategoryController @Inject()(val controllerComponents: ControllerComponent
       colorValues = Category.Color.values,
     )
     Ok(views.html.category.Store(vv))
+  }
+
+  // to_do_categoryの編集画面を表示するメソッド
+  def edit(categoryId: Long) = Action async { implicit req =>
+    for {
+      categoryOpt <- CategoryRepository.get(Category.Id(categoryId))
+    } yield {
+      categoryOpt match {
+        // categoryIdに対応するcategoryレコードがあればそのcategoryを更新する画面に遷移する
+        case Some(category) =>
+          val vv = ViewValueCategoryEdit(
+            title       = "カテゴリ更新画面",
+            cssSrc      = Seq("category/category-edit.css"),
+            jsSrc       = Seq("main.js"),
+            form        = CategoryFormData.form.fill(category),
+            colorValues = Category.Color.values,
+            categoryId  = categoryId
+          )
+          Ok(views.html.category.Edit(vv))
+        // categoryIdに対応するcategoryレコードが取得できなければTodo一覧表示画面に遷移する
+        case _ =>
+          NotFound(views.html.error.page404())
+      }
+    }
+  }
+
+  // 既存のto_do_categoryレコードを更新するメソッド
+  def update(categoryId: Long) = Action async { implicit req =>
+    CategoryFormData.form.bindFromRequest().fold(
+      formWithErrors => {
+        val vv = ViewValueCategoryEdit(
+          title       = "カテゴリ更新画面",
+          cssSrc      = Seq("category/category-edit.css"),
+          jsSrc       = Seq("main.js"),
+          form        = formWithErrors,
+          colorValues = Category.Color.values,
+          categoryId  = categoryId
+        )
+        Future.successful(BadRequest(views.html.category.Edit(vv)))
+      },
+      categoryFormData => {
+        for {
+          count <- CategoryRepository.update(Category(Category.Id(categoryId), categoryFormData.name, categoryFormData.slug, categoryFormData.color))
+        } yield {
+          count match {
+            case None => NotFound(views.html.error.page404())
+            case _    => Redirect(routes.CategoryController.list)
+          }
+        }
+      }
+    )
   }
 }

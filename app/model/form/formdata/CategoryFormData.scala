@@ -23,4 +23,11 @@ object CategoryFormData {
       "color" -> longNumber.transform[Category.Color](l => Category.Color(l.toShort), _.code),
     )(CategoryFormData.apply)(CategoryFormData.unapply)
   )
+
+  // Category.EmbeddedIdからCategoryFormDataを作成する
+  implicit def apply(category: Category.EmbeddedId): CategoryFormData = CategoryFormData(
+    category.v.name,
+    category.v.slug,
+    category.v.color,
+  )
 }

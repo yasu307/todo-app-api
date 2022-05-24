@@ -1,0 +1,28 @@
+// 今のところ内容は「_category-store-form.scss」と全く同じ
+// このままで問題なさそうであれば、1つのファイルにまとめる
+
+// 色を表す変数を定義
+// HTMLから値を代入できるように
+:root{
+  --color: rgb(0, 0, 0);
+}
+
+// カテゴリ更新フォームを表示するブロック
+.category-edit-form{
+  &__color-dd{
+    // 子要素(color-btnとcolor-label)を中央揃えで表示
+    display:     flex;
+    align-items: center;
+  }
+
+  // colorに対応する色の正方形を表示
+  &__color-label{
+    display: inline-block;
+    width: 1.5em;
+    height: 1.5em;
+    margin-right: 1em;
+    border: 0.05em solid;
+    // 背景色をHTMLから送られてきた色に変更する
+    background-color: var(--color);
+  }
+}
