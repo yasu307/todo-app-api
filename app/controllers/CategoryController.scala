@@ -147,18 +147,17 @@ class CategoryController @Inject()(val controllerComponents: ControllerComponent
   // 既存のto_do_categoryレコードを削除するメソッド
   // 削除するto_do_categoryに紐づけられているto_doレコードも更新する
   def delete(categoryId: Long) = Action async { implicit req =>
-    for{
-      result <- CategoryRepository.removeCategoryAndUpdateRelatedTodos(Category.Id(categoryId))
-    } yield {
-      logger.debug(s"hogehoge $result")
-      result match {
-        // DB処理でエラーが発生した場合
-        case Failure(e) => NotFound(views.html.error.page404())
-        // categoryIdに該当するcategoryレコードが存在しなかった場合
-        case Success(0) => NotFound(views.html.error.page404())
-        // DB処理が成功した場合
-        case _          => Redirect(routes.CategoryController.list)
-      }
-    }
+    val dbAction = for{
+          result <- CategoryRepository.removeCategoryAndUpdateRelatedTodos(Category.Id(categoryId))
+        } yield {
+          result match {
+            // categoryIdに該当するcategoryレコードが存在しなかった場合
+            case 0 => NotFound(views.html.error.page404())
+            // DB処理が成功した場合
+            case _ => Redirect(routes.CategoryController.list)
+          }
+        }
+    // recover内: DB処理でエラーが発生した場合
+    dbAction.recover{case _ => NotFound(views.html.error.page404())}
   }
 }
