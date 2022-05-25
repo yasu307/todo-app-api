@@ -11,6 +11,7 @@ import play.api.mvc.{AnyContent, BaseController, ControllerComponents, Request}
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
+import scala.util.{Failure, Success}
 
 class CategoryController @Inject()(val controllerComponents: ControllerComponents)(implicit ec: ExecutionContext)
   extends BaseController with I18nSupport {
@@ -144,13 +145,19 @@ class CategoryController @Inject()(val controllerComponents: ControllerComponent
   }
 
   // 既存のto_do_categoryレコードを削除するメソッド
+  // 削除するto_do_categoryに紐づけられているto_doレコードも更新する
   def delete(categoryId: Long) = Action async { implicit req =>
     for{
-      result <- CategoryRepository.remove(Category.Id(categoryId))
+      result <- CategoryRepository.removeCategoryAndUpdateRelatedTodos(Category.Id(categoryId))
     } yield {
+      logger.debug(s"hogehoge $result")
       result match {
-        case None => NotFound(views.html.error.page404())
-        case _    => Redirect(routes.CategoryController.list)
+        // DB処理でエラーが発生した場合
+        case Failure(e) => NotFound(views.html.error.page404())
+        // categoryIdに該当するcategoryレコードが存在しなかった場合
+        case Success(0) => NotFound(views.html.error.page404())
+        // DB処理が成功した場合
+        case _          => Redirect(routes.CategoryController.list)
       }
     }
   }
