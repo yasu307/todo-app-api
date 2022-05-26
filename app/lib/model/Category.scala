@@ -39,6 +39,11 @@ object Category {
 
   case class RGB(r: Int = 0, g: Int = 0, b: Int = 0)
 
+  // 前は存在していたが現在は削除されたカテゴリのidを表す変数
+  // todoが"どのカテゴリにも紐づいていない"ことを表すために用いる
+  // to_doテーブルの設定によりnullや0以下の値は設定できないため、一番使用される可能性が低いLong.MaxValueを用いる
+  final val deletedCategoryId = Long.MaxValue
+
   // WithNoIdを作成するメソッド
   def apply(name: String, slug: String, color: Category.Color): WithNoId = {
     new Entity.WithNoId(

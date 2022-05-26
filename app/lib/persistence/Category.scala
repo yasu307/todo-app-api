@@ -69,4 +69,21 @@ case class CategoryRepository[P <: JdbcProfile]()(implicit val driver: P)
         }
       } yield old
     }
+
+  /**
+   * Delete a category data and update todo datas related to the category
+   */
+  def removeCategoryAndUpdateRelatedTodos(id: Id): Future[Int] = {
+    // 2つのテーブルを使うため、DBActionを入れ子にする
+    DBAction(CategoryTable) { case (db, categorySlick) =>
+      DBAction(TodoTable) { case (_, todoSlick) =>
+        // カテゴリを削除するクエリ
+        val deleteCategory = categorySlick.filter(_.id === id).delete
+        // 削除するカテゴリに紐づけられているtodoを更新するクエリ
+        val updateTodos    = todoSlick.filter(_.categoryId === id.toLong).map(_.categoryId).update(Category.deletedCategoryId)
+        // 二つのクエリをトランザクション処理する
+        db.run((deleteCategory andFinally updateTodos).transactionally)
+      }(Predef.identity)
+    }(Predef.identity)
+  }
 }

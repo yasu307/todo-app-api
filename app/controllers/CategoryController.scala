@@ -3,7 +3,7 @@ package controllers
 import lib.model.Category
 import lib.persistence.onMySQL.CategoryRepository
 import model.form.formdata.CategoryFormData
-import model.view.viewvalues.{ViewValueCategoryEdit, ViewValueCategoryList, ViewValueCategoryStore, ViewValueHome}
+import model.view.viewvalues.{ViewValueCategoryEdit, ViewValueCategoryList, ViewValueCategoryStore, ViewValueError, ViewValueHome}
 import play.api.Logger
 import play.api.data.Form
 import play.api.i18n.I18nSupport
@@ -48,7 +48,7 @@ class CategoryController @Inject()(val controllerComponents: ControllerComponent
       val vv = ViewValueCategoryList(
         title       = "カテゴリ一覧",
         cssSrc      = Seq("category/category-list.css"),
-        jsSrc       = Seq("main.js"),
+        jsSrc       = Seq("category/category-list.js"),
         allCategory = allCategory,
       )
       Ok(views.html.category.List(vv))
@@ -111,7 +111,7 @@ class CategoryController @Inject()(val controllerComponents: ControllerComponent
           Ok(views.html.category.Edit(vv))
         // categoryIdに対応するcategoryレコードが取得できなければTodo一覧表示画面に遷移する
         case _ =>
-          NotFound(views.html.error.page404())
+          NotFound(views.html.Error(ViewValueError.error404))
       }
     }
   }
@@ -135,11 +135,37 @@ class CategoryController @Inject()(val controllerComponents: ControllerComponent
           count <- CategoryRepository.update(Category(Category.Id(categoryId), categoryFormData.name, categoryFormData.slug, categoryFormData.color))
         } yield {
           count match {
-            case None => NotFound(views.html.error.page404())
+            case None => NotFound(views.html.Error(ViewValueError.error404))
             case _    => Redirect(routes.CategoryController.list)
           }
         }
       }
     )
+  }
+
+  // 既存のto_do_categoryレコードを削除するメソッド
+  // 削除するto_do_categoryに紐づけられているto_doレコードも更新する
+  def delete(categoryId: Long) = Action async { implicit req =>
+    val dbAction = for{
+          result <- CategoryRepository.removeCategoryAndUpdateRelatedTodos(Category.Id(categoryId))
+        } yield {
+          result match {
+            // categoryIdに該当するcategoryレコードが存在しなかった場合
+            case 0 => NotFound(views.html.Error(ViewValueError.error404))
+            // DB処理が成功した場合
+            case _ => Redirect(routes.CategoryController.list)
+          }
+        }
+    // recover内: DBアクセス処理でエラーが発生した場合
+    dbAction.recover{ case e =>
+      logger.error("database error", e)
+      val vv = ViewValueError(
+        title        = "サーバーエラー",
+        statusCode   = 500,
+        errorMessage = e.getMessage,
+        cssSrc       = Seq("home.css"),
+        jsSrc        = Seq("main.js"),
+      )
+      InternalServerError(views.html.Error(vv))}
   }
 }
