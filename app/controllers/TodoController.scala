@@ -2,7 +2,7 @@ package controllers
 
 import lib.model.Todo
 import lib.persistence.onMySQL.TodoRepository
-import model.view.viewvalues.{ViewValueHome, ViewValueTodoEdit, ViewValueTodoList, ViewValueTodoStore}
+import model.view.viewvalues.{ViewValueError, ViewValueHome, ViewValueTodoEdit, ViewValueTodoList, ViewValueTodoStore}
 import model.form.formdata.{TodoEditFormData, TodoFormData}
 import model.controller.options.TodoStatusOptions
 import play.api.Logger
@@ -111,7 +111,7 @@ class TodoController @Inject()(val controllerComponents: ControllerComponents)(i
           Ok(views.html.todo.Edit(vv))
         // todoIdに対応するtodoレコードが取得できなければTodo一覧表示画面に遷移する
         case _ =>
-          NotFound(views.html.error.page404())
+          NotFound(views.html.Error(ViewValueError.error404))
       }
     }
   }
@@ -135,7 +135,7 @@ class TodoController @Inject()(val controllerComponents: ControllerComponents)(i
           count <- TodoRepository.update(Todo(Todo.Id(todoId), todoEditFormData.categoryId, todoEditFormData.title, todoEditFormData.body, todoEditFormData.state))
         } yield {
           count match{
-            case None => NotFound(views.html.error.page404())
+            case None => NotFound(views.html.Error(ViewValueError.error404))
             case _    => Redirect(routes.TodoController.list)
           }
         }
@@ -149,7 +149,7 @@ class TodoController @Inject()(val controllerComponents: ControllerComponents)(i
       result <- TodoRepository.remove(Todo.Id(todoId))
     } yield {
       result match {
-        case None => NotFound(views.html.error.page404())
+        case None => NotFound(views.html.Error(ViewValueError.error404))
         case _    => Redirect(routes.TodoController.list)
       }
     }

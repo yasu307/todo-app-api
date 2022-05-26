@@ -3,7 +3,7 @@ package controllers
 import lib.model.Category
 import lib.persistence.onMySQL.CategoryRepository
 import model.form.formdata.CategoryFormData
-import model.view.viewvalues.{ViewValueCategoryEdit, ViewValueCategoryList, ViewValueCategoryStore, ViewValueHome}
+import model.view.viewvalues.{ViewValueCategoryEdit, ViewValueCategoryList, ViewValueCategoryStore, ViewValueError, ViewValueHome}
 import play.api.Logger
 import play.api.data.Form
 import play.api.i18n.I18nSupport
@@ -11,7 +11,6 @@ import play.api.mvc.{AnyContent, BaseController, ControllerComponents, Request}
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
-import scala.util.{Failure, Success}
 
 class CategoryController @Inject()(val controllerComponents: ControllerComponents)(implicit ec: ExecutionContext)
   extends BaseController with I18nSupport {
@@ -112,7 +111,7 @@ class CategoryController @Inject()(val controllerComponents: ControllerComponent
           Ok(views.html.category.Edit(vv))
         // categoryIdに対応するcategoryレコードが取得できなければTodo一覧表示画面に遷移する
         case _ =>
-          NotFound(views.html.error.page404())
+          NotFound(views.html.Error(ViewValueError.error404))
       }
     }
   }
@@ -136,7 +135,7 @@ class CategoryController @Inject()(val controllerComponents: ControllerComponent
           count <- CategoryRepository.update(Category(Category.Id(categoryId), categoryFormData.name, categoryFormData.slug, categoryFormData.color))
         } yield {
           count match {
-            case None => NotFound(views.html.error.page404())
+            case None => NotFound(views.html.Error(ViewValueError.error404))
             case _    => Redirect(routes.CategoryController.list)
           }
         }
@@ -152,12 +151,21 @@ class CategoryController @Inject()(val controllerComponents: ControllerComponent
         } yield {
           result match {
             // categoryIdに該当するcategoryレコードが存在しなかった場合
-            case 0 => NotFound(views.html.error.page404())
+            case 0 => NotFound(views.html.Error(ViewValueError.error404))
             // DB処理が成功した場合
             case _ => Redirect(routes.CategoryController.list)
           }
         }
-    // recover内: DB処理でエラーが発生した場合
-    dbAction.recover{case _ => NotFound(views.html.error.page404())}
+    // recover内: DBアクセス処理でエラーが発生した場合
+    dbAction.recover{ case e =>
+      logger.error("database error", e)
+      val vv = ViewValueError(
+        title        = "サーバーエラー",
+        statusCode   = 500,
+        errorMessage = e.getMessage,
+        cssSrc       = Seq("home.css"),
+        jsSrc        = Seq("main.js"),
+      )
+      InternalServerError(views.html.Error(vv))}
   }
 }

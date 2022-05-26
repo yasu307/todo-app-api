@@ -1,0 +1,8 @@
+@*
+Errorページ
+*@
+@import model.view.viewvalues.ViewValueError
+@(vv: ViewValueError)
+@common.Default(vv){
+  <p>@vv.statusCode: @vv.errorMessage</p>
+}
