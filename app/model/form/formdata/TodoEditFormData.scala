@@ -1,6 +1,6 @@
 package model.form.formdata
 
-import lib.model.Todo
+import lib.model.{Category, Todo}
 import play.api.data.Form
 import play.api.data.Forms._
 
@@ -10,7 +10,7 @@ import play.api.data.Forms._
 // Todoモデルのインスタンスを元にこのフォームデータを埋めた結果を取得するには
 // TodoEditFormData.form.fill(todo) とする。
 case class TodoEditFormData(
-  categoryId: Long, //todo TodoCategoryをインポートして型を指定する必要がある？
+  categoryId: Category.Id,
   title:      String,
   body:       String,
   state:      Todo.Status,
@@ -20,7 +20,7 @@ object TodoEditFormData {
   // Todo更新画面で使用するFormオブジェクト
   val form = Form(
     mapping(
-      "categoryId" -> longNumber(),
+      "categoryId" -> longNumber.transform[Category.Id](l => Category.Id(l), _.toLong),
       "title"      -> nonEmptyText(maxLength = 255),
       "body"       -> text(),
       "state"      -> longNumber.transform[Todo.Status](l => Todo.Status(l.toShort), _.code),
