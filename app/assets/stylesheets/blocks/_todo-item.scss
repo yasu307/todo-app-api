@@ -1,5 +1,20 @@
 @import "../placeholders/_font-awesome-link.scss";
 
+// 色を表す変数を定義
+// HTMLから値を代入できるように
+:root{
+  --color: rgb(0, 0, 0);
+}
+
+%sub-info-item{
+  border: solid;
+  border-radius: 10px;
+  padding: 0.5em;
+  margin: 0.5em 0.5em 0.5em 0;
+  font-weight: bold;
+  font-size: 0.5em;
+}
+
 /* 一つのtodoを表示するブロック */
 .todo-item{
   box-shadow: 0 0 4px gray;
@@ -14,12 +29,14 @@
     display: flex;
   }
 
-  &__category, &__status{
-    border: solid;
-    border-radius: 10px;
-    padding: 0.5em;
-    margin: 0.5em 0.5em 0.5em 0;
-    font-size: 0.5em;
+  &__category{
+    @extend %sub-info-item;
+    // 背景色をHTMLから送られてきた色に変更する
+    background-color: var(--color);
+  }
+
+  &__status{
+    @extend %sub-info-item;
   }
 
   &__body{
