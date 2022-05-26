@@ -5,7 +5,6 @@ import lib.model.Category
 import slick.jdbc.JdbcProfile
 
 import scala.concurrent.Future
-import scala.util.Try
 
 // CategoryRepository: CategoryTableへのクエリ発行を行うRepository層の定義
 //~~~~~~~~~~~~~~~~~~~~~~
