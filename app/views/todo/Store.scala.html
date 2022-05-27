@@ -19,13 +19,13 @@ Todo追加画面
               <p>ありません</p>
             }
 
-            @* 何もボタンが選択されなければCategory.deletedCategoryIdが送信される *@
+            @* 何もボタンが選択されなければCategory.deletedIdが送信される *@
             @*
                何もボタンが選択されない状況:
 　　　　　　　　　1. 全てのカテゴリが削除されており、そもそもラジオボタンが存在しない場合
                2. ラジオボタンを選択しなかった場合
             *@
-            <input type="radio" name="categoryId" value="@Category.deletedCategoryId" style="display:none;" checked>
+            <input type="radio" name="categoryId" value="@Category.deletedId" style="display:none;" checked>
 
             @* 個々のラジオボタンを作成 *@
             @for(ctg <- vv.allCategory){
