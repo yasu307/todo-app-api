@@ -49,8 +49,8 @@ case class CategoryRepository[P <: JdbcProfile]()(implicit val driver: P)
         _ <- old match {
           case None    => DBIO.successful(0)
           case Some(_) => row
-                          .map(p => (p.name, p.slug, p.color, p.updatedAt))
-                          .update(entity.v.name, entity.v.slug, entity.v.color, entity.v.updatedAt)
+                          .map(p => (p.name, p.slug, p.color))
+                          .update(entity.v.name, entity.v.slug, entity.v.color)
         }
       } yield old
     }
@@ -80,7 +80,7 @@ case class CategoryRepository[P <: JdbcProfile]()(implicit val driver: P)
         // カテゴリを削除するクエリ
         val deleteCategory = categorySlick.filter(_.id === id).delete
         // 削除するカテゴリに紐づけられているtodoを更新するクエリ
-        val updateTodos    = todoSlick.filter(_.categoryId === id.toLong).map(_.categoryId).update(Category.deletedCategoryId)
+        val updateTodos    = todoSlick.filter(_.categoryId === id).map(_.categoryId).update(Category.deletedId)
         // 二つのクエリをトランザクション処理する
         db.run((deleteCategory andFinally updateTodos).transactionally)
       }(Predef.identity)

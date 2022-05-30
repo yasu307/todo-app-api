@@ -29,12 +29,12 @@ object Category {
 //  ~~~~~~~~~~~~~~~~~
   sealed abstract class Color(val code: Short, val rgb: RGB) extends EnumStatus
   object Color extends EnumStatus.Of[Color] {
-    case object RED     extends Color(code = 0, rgb = RGB(255, 0, 0))
-    case object GREEN   extends Color(code = 1, rgb = RGB(0, 255, 0))
-    case object BLUE    extends Color(code = 2, rgb = RGB(0, 0, 255))
-    case object YELLOW  extends Color(code = 3, rgb = RGB(255, 255, 0))
-    case object AQUA    extends Color(code = 4, rgb = RGB(0, 255, 255))
-    case object FUCHSIA extends Color(code = 5, rgb = RGB(255, 0, 255))
+    case object RED     extends Color(code = 0, rgb = RGB(255, 51, 51))
+    case object GREEN   extends Color(code = 1, rgb = RGB(51, 255, 51))
+    case object BLUE    extends Color(code = 2, rgb = RGB(51, 102, 255))
+    case object YELLOW  extends Color(code = 3, rgb = RGB(255, 255, 102))
+    case object AQUA    extends Color(code = 4, rgb = RGB(102, 255, 255))
+    case object FUCHSIA extends Color(code = 5, rgb = RGB(255, 102, 255))
   }
 
   case class RGB(r: Int = 0, g: Int = 0, b: Int = 0)
@@ -42,7 +42,7 @@ object Category {
   // 前は存在していたが現在は削除されたカテゴリのidを表す変数
   // todoが"どのカテゴリにも紐づいていない"ことを表すために用いる
   // to_doテーブルの設定によりnullや0以下の値は設定できないため、一番使用される可能性が低いLong.MaxValueを用いる
-  final val deletedCategoryId = Long.MaxValue
+  final val deletedId = Category.Id(Long.MaxValue)
 
   // WithNoIdを作成するメソッド
   def apply(name: String, slug: String, color: Category.Color): WithNoId = {

@@ -10,7 +10,7 @@ import java.time.LocalDateTime
 import Todo._
 case class Todo(
   id:         Option[Id],
-  categoryId: Long, //todo TodoCategoryをインポートして型を指定する必要がある？
+  categoryId: Category.Id,
   title:      String,
   body:       String,
   state:      Status,
@@ -36,7 +36,7 @@ object Todo {
   }
 
   // INSERT時のIDがAutoincrementのため,IDなしであることを示すオブジェクトに変換
-  def apply(categoryId: Long, title: String, body: String): WithNoId = {
+  def apply(categoryId: Category.Id, title: String, body: String): WithNoId = {
     new Entity.WithNoId(
       new Todo(
         id         = None,
@@ -49,7 +49,7 @@ object Todo {
   }
 
   // EmbeddedIdを作成するメソッド
-  def apply(todoId: Todo.Id, categoryId: Long, title: String, body: String, state: Todo.Status): EmbeddedId = {
+  def apply(todoId: Todo.Id, categoryId: Category.Id, title: String, body: String, state: Todo.Status): EmbeddedId = {
     new Todo(
       id         = Some(todoId),
       categoryId = categoryId,

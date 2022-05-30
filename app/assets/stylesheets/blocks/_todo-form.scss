@@ -1,0 +1,14 @@
+// 色を表す変数を定義
+// HTMLから値を代入できるように
+:root{
+  --color: rgb(0, 0, 0);
+}
+
+// todo入力フォームを表示するブロック
+// 現状ではtodo追加フォーム、todo更新フォームにて使用されている at 2022/05/26
+.todo-form{
+  &__category-label{
+    // 背景色をHTMLから送られてきた色に変更する
+    background-color: var(--color);
+  }
+}
