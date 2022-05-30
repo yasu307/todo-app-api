@@ -49,8 +49,8 @@ case class CategoryRepository[P <: JdbcProfile]()(implicit val driver: P)
         _ <- old match {
           case None    => DBIO.successful(0)
           case Some(_) => row
-                          .map(p => (p.name, p.slug, p.color, p.updatedAt))
-                          .update(entity.v.name, entity.v.slug, entity.v.color, entity.v.updatedAt)
+                          .map(p => (p.name, p.slug, p.color))
+                          .update(entity.v.name, entity.v.slug, entity.v.color)
         }
       } yield old
     }
