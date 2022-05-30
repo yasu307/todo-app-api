@@ -43,10 +43,9 @@ class TodoController @Inject()(val controllerComponents: ControllerComponents)(i
 
   // to_doテーブルのレコード一覧を表示するメソッド
   def list() = Action async{ implicit req =>
-    for{
-      allTodo     <- TodoRepository.getAll()
-      allCategory <- CategoryRepository.getAll()
-    }yield{
+    for {
+      (allTodo, allCategory) <- TodoRepository.getAll() zip CategoryRepository.getAll()
+    } yield {
       val vv = ViewValueTodoList(
         title       = "Todo 一覧",
         cssSrc      = Seq("todo/todo-list.css"),
@@ -106,9 +105,8 @@ class TodoController @Inject()(val controllerComponents: ControllerComponents)(i
   // to_doの内容を編集する画面を表示するメソッド
   // todoをそのままeditの引数にしなかった理由 -> routes参照
   def edit(todoId: Long) = Action async { implicit req =>
-    for{
-      todoOpt     <- TodoRepository.get(Todo.Id(todoId))
-      allCategory <- CategoryRepository.getAll()
+    for {
+      (todoOpt, allCategory) <- TodoRepository.get(Todo.Id(todoId)) zip CategoryRepository.getAll()
     }yield{
       todoOpt match {
         // todoIdに対応するtodoレコードがあればそのtodoを更新する画面に遷移する
