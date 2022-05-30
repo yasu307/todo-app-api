@@ -1,8 +1,6 @@
 /**
- *
- * from to do sample project
- *
- */
+  * from to do sample project
+  */
 
 package model.view.viewvalues
 
@@ -12,4 +10,3 @@ case class ViewValueHome(
   cssSrc: Seq[String],
   jsSrc:  Seq[String],
 ) extends ViewValueCommon
-

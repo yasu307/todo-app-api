@@ -9,7 +9,7 @@ case class ViewValueError(
   jsSrc:        Seq[String],
 ) extends ViewValueCommon
 
-object ViewValueError{
+object ViewValueError {
   // error404ページのviewvalue
   val error404 = ViewValueError(
     title        = "Not Found",

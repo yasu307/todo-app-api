@@ -1,6 +1,6 @@
 package model.form.formdata
 
-import lib.model.{Category, Todo}
+import lib.model.{ Category, Todo }
 import play.api.data.Form
 import play.api.data.Forms._
 

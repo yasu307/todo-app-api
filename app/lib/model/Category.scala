@@ -20,8 +20,8 @@ case class Category(
 // コンパニオンオブジェクト
 //~~~~~~~~~~~~~~~~~~~~~~~~
 object Category {
-  val Id  = the[Identity[Id]]
-  type Id = Long @@ Category
+  val Id = the[Identity[Id]]
+  type Id         = Long @@ Category
   type WithNoId   = Entity.WithNoId[Id, Category]
   type EmbeddedId = Entity.EmbeddedId[Id, Category]
 
