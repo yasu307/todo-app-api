@@ -1,25 +1,25 @@
 package controllers
 
-import lib.model.{Category, Todo}
-import lib.persistence.onMySQL.{CategoryRepository, TodoRepository}
-import model.view.viewvalues.{ViewValueError, ViewValueHome, ViewValueTodoEdit, ViewValueTodoList, ViewValueTodoStore}
-import model.form.formdata.{TodoEditFormData, TodoFormData}
+import lib.model.{ Category, Todo }
+import lib.persistence.onMySQL.{ CategoryRepository, TodoRepository }
+import model.view.viewvalues.{ ViewValueError, ViewValueHome, ViewValueTodoEdit, ViewValueTodoList, ViewValueTodoStore }
+import model.form.formdata.{ TodoEditFormData, TodoFormData }
 import model.controller.options.TodoStatusOptions
 import play.api.Logger
 import play.api.data.Form
 import play.api.i18n.I18nSupport
-import play.api.mvc.{AnyContent, BaseController, ControllerComponents, Request}
+import play.api.mvc.{ AnyContent, BaseController, ControllerComponents, Request }
 
 import javax.inject.Inject
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.{ ExecutionContext, Future }
 
-class TodoController @Inject()(val controllerComponents: ControllerComponents)(implicit ec: ExecutionContext)
+class TodoController @Inject() (val controllerComponents: ControllerComponents)(implicit ec: ExecutionContext)
   extends BaseController with I18nSupport {
   val logger: Logger = Logger(this.getClass())
 
-  // to_doテーブルの操作をデバックするためのメソッド　
+  // to_doテーブルの操作をデバックするためのメソッド
   // テーブル操作の結果はlogに出力する
-  def debug() = Action async{ implicit req =>
+  def debug() = Action async { implicit req =>
     val vv = ViewValueHome(
       title  = "Home",
       cssSrc = Seq("home.css"),
@@ -30,11 +30,11 @@ class TodoController @Inject()(val controllerComponents: ControllerComponents)(i
     for {
       todoId      <- TodoRepository.add(todoWithNoId)
       todoFromDB  <- TodoRepository.get(Todo.Id(todoId))
-      updatedTodo <- TodoRepository.update(todoFromDB.get.map(_.copy(title="updated")))
+      updatedTodo <- TodoRepository.update(todoFromDB.get.map(_.copy(title = "updated")))
       deletedTodo <- TodoRepository.remove(updatedTodo.get.id)
     } yield {
-      logger.debug("add: "    + todoId.toString)
-      logger.debug("get: "    + todoFromDB.toString)
+      logger.debug("add: " + todoId.toString)
+      logger.debug("get: " + todoFromDB.toString)
       logger.debug("update: " + updatedTodo.toString)
       logger.debug("delete: " + deletedTodo.toString)
       Ok(views.html.Home(vv))
@@ -42,7 +42,7 @@ class TodoController @Inject()(val controllerComponents: ControllerComponents)(i
   }
 
   // to_doテーブルのレコード一覧を表示するメソッド
-  def list() = Action async{ implicit req =>
+  def list() = Action async { implicit req =>
     for {
       (allTodo, allCategory) <- TodoRepository.getAll() zip CategoryRepository.getAll()
     } yield {
@@ -77,7 +77,7 @@ class TodoController @Inject()(val controllerComponents: ControllerComponents)(i
       },
       // 処理が成功した場合に呼び出される関数
       (todoFormData: TodoFormData) => {
-        for{
+        for {
           _ <- TodoRepository.add(Todo(todoFormData.categoryId, todoFormData.title, todoFormData.body))
         } yield {
           Redirect(routes.TodoController.list)
@@ -87,8 +87,8 @@ class TodoController @Inject()(val controllerComponents: ControllerComponents)(i
   }
 
   // to_doレコードの追加内容を入力するformを表示するメソッド
-  def register() = Action async  { implicit req =>
-    for{
+  def register() = Action async { implicit req =>
+    for {
       allCategory <- CategoryRepository.getAll()
     } yield {
       val vv = ViewValueTodoStore(
@@ -107,7 +107,7 @@ class TodoController @Inject()(val controllerComponents: ControllerComponents)(i
   def edit(todoId: Long) = Action async { implicit req =>
     for {
       (todoOpt, allCategory) <- TodoRepository.get(Todo.Id(todoId)) zip CategoryRepository.getAll()
-    }yield{
+    } yield {
       todoOpt match {
         // todoIdに対応するtodoレコードがあればそのtodoを更新する画面に遷移する
         case Some(todo) =>
@@ -122,7 +122,7 @@ class TodoController @Inject()(val controllerComponents: ControllerComponents)(i
           )
           Ok(views.html.todo.Edit(vv))
         // todoIdに対応するtodoレコードが取得できなければTodo一覧表示画面に遷移する
-        case _ =>
+        case _          =>
           NotFound(views.html.Error(ViewValueError.error404))
       }
     }
@@ -136,22 +136,22 @@ class TodoController @Inject()(val controllerComponents: ControllerComponents)(i
           allCategory <- CategoryRepository.getAll()
         } yield {
           val vv = ViewValueTodoEdit(
-            title     = "Todo更新画面",
-            cssSrc    = Seq("todo/todo-edit.css"),
-            jsSrc     = Seq("main.js"),
-            form      = formWithErrors,
-            statusOpt = TodoStatusOptions.todoStatusOpt,
-            todoId    = todoId,
+            title       = "Todo更新画面",
+            cssSrc      = Seq("todo/todo-edit.css"),
+            jsSrc       = Seq("main.js"),
+            form        = formWithErrors,
+            statusOpt   = TodoStatusOptions.todoStatusOpt,
+            todoId      = todoId,
             allCategory = allCategory,
           )
           BadRequest(views.html.todo.Edit(vv))
         }
       },
       todoEditFormData => {
-        for{
+        for {
           count <- TodoRepository.update(Todo(Todo.Id(todoId), todoEditFormData.categoryId, todoEditFormData.title, todoEditFormData.body, todoEditFormData.state))
         } yield {
-          count match{
+          count match {
             case None => NotFound(views.html.Error(ViewValueError.error404))
             case _    => Redirect(routes.TodoController.list)
           }
@@ -162,7 +162,7 @@ class TodoController @Inject()(val controllerComponents: ControllerComponents)(i
 
   // 既存のto_doレコードを削除するメソッド
   def delete(todoId: Long) = Action async { implicit req =>
-    for{
+    for {
       result <- TodoRepository.remove(Todo.Id(todoId))
     } yield {
       result match {

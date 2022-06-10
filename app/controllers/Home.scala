@@ -1,8 +1,6 @@
 /**
- *
- * from to do sample project
- *
- */
+  * from to do sample project
+  */
 
 package controllers
 
@@ -12,7 +10,7 @@ import play.api.mvc._
 import play.api.Logger
 
 @Singleton
-class HomeController @Inject()(val controllerComponents: ControllerComponents) extends BaseController {
+class HomeController @Inject() (val controllerComponents: ControllerComponents) extends BaseController {
   val logger: Logger = Logger(this.getClass())
 
   // Home画面を表示するメソッド

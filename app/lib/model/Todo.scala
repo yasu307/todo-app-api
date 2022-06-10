@@ -21,9 +21,9 @@ case class Todo(
 // コンパニオンオブジェクト
 //~~~~~~~~~~~~~~~~~~~~~~~~
 object Todo {
-  val  Id = the[Identity[Id]]
-  type Id = Long @@ Todo
-  type WithNoId = Entity.WithNoId [Id, Todo]
+  val Id = the[Identity[Id]]
+  type Id         = Long @@ Todo
+  type WithNoId   = Entity.WithNoId[Id, Todo]
   type EmbeddedId = Entity.EmbeddedId[Id, Todo]
 
   // ステータス定義

@@ -15,33 +15,34 @@ case class TodoRepository[P <: JdbcProfile]()(implicit val driver: P)
   import api._
 
   /**
-   * Get Todo Data
-   */
+    * Get Todo Data
+    */
   def get(id: Id): Future[Option[EntityEmbeddedId]] =
-    RunDBAction(TodoTable, "slave") { _
-      .filter(_.id === id)
-      .result.headOption
+    RunDBAction(TodoTable, "slave") {
+      _
+        .filter(_.id === id)
+        .result.headOption
     }
 
   /**
-   * Get all Todo Data
-   */
+    * Get all Todo Data
+    */
   def getAll(): Future[Seq[EntityEmbeddedId]] =
     RunDBAction(TodoTable, "slave") {
       _.result
     }
 
   /**
-   * Add Todo Data
-   */
+    * Add Todo Data
+    */
   def add(entity: EntityWithNoId): Future[Id] =
     RunDBAction(TodoTable) { slick =>
       (slick returning slick.map(_.id)) += entity.v
     }
 
   /**
-   * Update Todo Data columns except id and created_at
-   */
+    * Update Todo Data columns except id and created_at
+    */
   def update(entity: EntityEmbeddedId): Future[Option[EntityEmbeddedId]] =
     RunDBAction(TodoTable) { slick =>
       val row = slick.filter(_.id === entity.id)
@@ -50,15 +51,15 @@ case class TodoRepository[P <: JdbcProfile]()(implicit val driver: P)
         _   <- old match {
           case None    => DBIO.successful(0)
           case Some(_) => row
-                          .map(p => (p.categoryId, p.title, p.body, p.state))
-                          .update(entity.v.categoryId, entity.v.title, entity.v.body, entity.v.state)
+              .map(p => (p.categoryId, p.title, p.body, p.state))
+              .update(entity.v.categoryId, entity.v.title, entity.v.body, entity.v.state)
         }
       } yield old
     }
 
   /**
-   * Delete Todo Data
-   */
+    * Delete Todo Data
+    */
   def remove(id: Id): Future[Option[EntityEmbeddedId]] =
     RunDBAction(TodoTable) { slick =>
       val row = slick.filter(_.id === id)

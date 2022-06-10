@@ -1,6 +1,6 @@
 package model.view.viewvalues
 
-import lib.model.{Category, Todo}
+import lib.model.{ Category, Todo }
 
 // todo/list(Todo一覧)ページのviewvalue
 case class ViewValueTodoList(
