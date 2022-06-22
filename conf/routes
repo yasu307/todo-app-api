@@ -3,6 +3,12 @@
 # https://www.playframework.com/documentation/latest/ScalaRouting
 # ~~~~
 
+GET      /api/todos                    controllers.TodoApiController.list
+
+GET      /api/categories               controllers.CategoryApiController.list
+
+######################################################################################
+### api化前のRoutes
 GET     /                             controllers.HomeController.index
 GET     /todo/debug                   controllers.TodoController.debug
 
