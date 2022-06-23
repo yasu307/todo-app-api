@@ -5,9 +5,11 @@
 
 GET      /api/todos                    controllers.TodoApiController.list
 POST     /api/todos                    controllers.TodoApiController.store
+PUT      /api/todos                    controllers.TodoApiController.update
 
 GET      /api/categories               controllers.CategoryApiController.list
 POST     /api/categories               controllers.CategoryApiController.store
+PUT      /api/categories               controllers.CategoryApiController.update
 
 ######################################################################################
 ### api化前のRoutes

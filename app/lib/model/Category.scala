@@ -70,4 +70,9 @@ object Category {
       color = color,
     ).toEmbeddedId
   }
+
+  // 上記applyメソッドの別名を作成
+  // CategoryUpdateReadsにて関数オブジェクトに変換して用いる
+  // applyは同名の関数が存在しているので関数オブジェクトに指定できない。そのため、このような処理をしている
+  def createEmbeddedId(categoryId: Category.Id, name: String, slug: String, color: Category.Color) = apply(categoryId, name, slug, color)
 }

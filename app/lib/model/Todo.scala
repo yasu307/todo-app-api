@@ -63,4 +63,9 @@ object Todo {
       state      = state,
     ).toEmbeddedId
   }
+
+  // 上記applyメソッドの別名を作成
+  // TodoUpdateReadsにて関数オブジェクトに変換して用いる
+  // applyは同名の関数が存在しているので関数オブジェクトに指定できない。そのため、このような処理をしている
+  def createEmbeddedId(todoId: Todo.Id, categoryId: Category.Id, title: String, body: String, state: Todo.Status) = apply(todoId, categoryId, title, body, state)
 }

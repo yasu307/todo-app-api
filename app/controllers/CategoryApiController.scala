@@ -1,6 +1,7 @@
 package controllers
 
 import json.reads.CategoryStoreReads.categoryStoreReads
+import json.reads.CategoryUpdateReads.categoryUpdateReads
 import lib.persistence.onMySQL.CategoryRepository
 import play.api.i18n.I18nSupport
 import play.api.libs.json.{ JsError, Json }
@@ -32,6 +33,20 @@ class CategoryApiController @Inject() (val controllerComponents: ControllerCompo
           result <- CategoryRepository.add(category)
         } yield {
           Ok(Json.toJson(result.toLong))
+        }
+      }
+    )
+  }
+
+  // categoryレコードを更新するメソッド
+  def update() = Action(parse.json) async { implicit req =>
+    req.body.validate[Category.EmbeddedId].fold(
+      error => Future.successful(BadRequest(JsError.toJson(error))),
+      category => {
+        for {
+          result <- CategoryRepository.update(category)
+        } yield {
+          Ok(Json.toJson(result))
         }
       }
     )

@@ -2,6 +2,7 @@ package controllers
 
 import json.writes.TodoWrites.todoWrites
 import json.reads.TodoStoreReads.todoStoreReads
+import json.reads.TodoUpdateReads.todoUpdateReads
 import lib.model.Todo
 import lib.persistence.onMySQL.TodoRepository
 import play.api.i18n.I18nSupport
@@ -32,6 +33,20 @@ class TodoApiController @Inject() (val controllerComponents: ControllerComponent
           result <- TodoRepository.add(todo)
         } yield {
           Ok(Json.toJson(result.toLong))
+        }
+      }
+    )
+  }
+
+  // to_doレコードを更新するメソッド
+  def update() = Action(parse.json) async { implicit req =>
+    req.body.validate[Todo.EmbeddedId].fold(
+      error => Future.successful(BadRequest(JsError.toJson(error))),
+      todo => {
+        for {
+          result <- TodoRepository.update(todo)
+        } yield {
+          Ok(Json.toJson(result))
         }
       }
     )
