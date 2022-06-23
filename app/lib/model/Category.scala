@@ -56,6 +56,11 @@ object Category {
     )
   }
 
+  // 上記applyメソッドの別名を作成
+  // CategoryStoreReadsにて関数オブジェクトに変換して用いる
+  // applyは同名の関数が存在しているので関数オブジェクトに指定できない。そのため、このような処理をしている
+  def createWithNoId(name: String, slug: String, color: Category.Color) = apply(name, slug, color)
+
   // EmbeddedIdを作成するメソッド
   def apply(categoryId: Category.Id, name: String, slug: String, color: Category.Color): EmbeddedId = {
     new Category(

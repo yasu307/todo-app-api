@@ -4,8 +4,10 @@
 # ~~~~
 
 GET      /api/todos                    controllers.TodoApiController.list
+POST     /api/todos                    controllers.TodoApiController.store
 
 GET      /api/categories               controllers.CategoryApiController.list
+POST     /api/categories               controllers.CategoryApiController.store
 
 ######################################################################################
 ### api化前のRoutes
