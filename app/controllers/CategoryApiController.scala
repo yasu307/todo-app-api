@@ -51,4 +51,13 @@ class CategoryApiController @Inject() (val controllerComponents: ControllerCompo
       }
     )
   }
+
+  // categoryレコードを削除するメソッド
+  def delete(categoryId: Long) = Action async { implicit req =>
+    for {
+      result <- CategoryRepository.removeCategoryAndUpdateRelatedTodos(Category.Id(categoryId))
+    } yield {
+      Ok(Json.toJson(result))
+    }
+  }
 }

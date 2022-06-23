@@ -51,4 +51,13 @@ class TodoApiController @Inject() (val controllerComponents: ControllerComponent
       }
     )
   }
+
+  // to_doレコードを削除するメソッド
+  def delete(todoId: Long) = Action async { implicit req =>
+    for {
+      result <- TodoRepository.remove(Todo.Id(todoId))
+    } yield {
+      Ok(Json.toJson(result))
+    }
+  }
 }
