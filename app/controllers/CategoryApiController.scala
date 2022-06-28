@@ -39,14 +39,19 @@ class CategoryApiController @Inject() (val controllerComponents: ControllerCompo
   }
 
   // categoryレコードを更新するメソッド
-  def update() = Action(parse.json) async { implicit req =>
+  def update(categoryId: Long) = Action(parse.json) async { implicit req =>
     req.body.validate[Category.EmbeddedId].fold(
       error => Future.successful(BadRequest(JsError.toJson(error))),
       category => {
-        for {
-          result <- CategoryRepository.update(category)
-        } yield {
-          Ok(Json.toJson(result))
+        // URLから取得したCategory.Idとリクエストボディに含まれているCategoryデータのIdが異なっていたらBadRequestを返す
+        if (categoryId != category.id.toLong) {
+          Future.successful(BadRequest(Json.toJson("URL or Request body is wrong")))
+        } else {
+          for {
+            result <- CategoryRepository.update(category)
+          } yield {
+            Ok(Json.toJson(result))
+          }
         }
       }
     )

@@ -39,14 +39,19 @@ class TodoApiController @Inject() (val controllerComponents: ControllerComponent
   }
 
   // to_doレコードを更新するメソッド
-  def update() = Action(parse.json) async { implicit req =>
+  def update(todoId: Long) = Action(parse.json) async { implicit req =>
     req.body.validate[Todo.EmbeddedId].fold(
       error => Future.successful(BadRequest(JsError.toJson(error))),
       todo => {
-        for {
-          result <- TodoRepository.update(todo)
-        } yield {
-          Ok(Json.toJson(result))
+        // URLから取得したTodo.Idとリクエストボディに含まれているTodoデータのIdが異なっていたらBadRequestを返す
+        if (todoId != todo.id.toLong) {
+          Future.successful(BadRequest(Json.toJson("URL or Request body is wrong")))
+        } else {
+          for {
+            result <- TodoRepository.update(todo)
+          } yield {
+            Ok(Json.toJson(result))
+          }
         }
       }
     )

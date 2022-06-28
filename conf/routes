@@ -5,12 +5,12 @@
 
 GET      /api/todos                    controllers.TodoApiController.list
 POST     /api/todos                    controllers.TodoApiController.store
-PUT      /api/todos                    controllers.TodoApiController.update
+PUT      /api/todos/$id<[0-9]+>        controllers.TodoApiController.update(id: Long)
 DELETE   /api/todos/$id<[0-9]+>        controllers.TodoApiController.delete(id: Long)
 
 GET      /api/categories               controllers.CategoryApiController.list
 POST     /api/categories               controllers.CategoryApiController.store
-PUT      /api/categories               controllers.CategoryApiController.update
+PUT      /api/categories/$id<[0-9]+>   controllers.CategoryApiController.update(id: Long)
 DELETE   /api/categories/$id<[0-9]+>   controllers.CategoryApiController.delete(id: Long)
 
 ######################################################################################
