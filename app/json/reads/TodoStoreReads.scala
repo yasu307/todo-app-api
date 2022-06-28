@@ -10,5 +10,5 @@ object TodoStoreReads {
     (JsPath \ "categoryId").read[Category.Id] and
       (JsPath \ "title").read[String] and
       (JsPath \ "body").read[String]
-  )(Todo.createWithNoId _)
+  )(Todo(_: Category.Id, _: String, _: String))
 }

@@ -11,5 +11,5 @@ object CategoryUpdateReads {
       (JsPath \ "name").read[String] and
       (JsPath \ "slug").read[String] and
       (JsPath \ "color" \ "code").read[Category.Color]
-  )(Category.createEmbeddedId _)
+  )(Category(_: Category.Id, _: String, _: String, _: Category.Color))
 }

@@ -12,5 +12,5 @@ object TodoUpdateReads {
       (JsPath \ "title").read[String] and
       (JsPath \ "body").read[String] and
       (JsPath \ "state" \ "code").read[Todo.Status]
-  )(Todo.createEmbeddedId _)
+  )(Todo(_: Todo.Id, _: Category.Id, _: String, _: String, _: Todo.Status))
 }
