@@ -5,10 +5,11 @@ import lib.model.{ Category }
 import play.api.libs.functional.syntax.toFunctionalBuilderOps
 
 object CategoryUpdateReads {
+  import EnvReads._
   implicit val categoryUpdateReads: Reads[Category.EmbeddedId] = (
-    (JsPath \ "id").read[Long].map(Category.Id.apply) and
+    (JsPath \ "id").read[Category.Id] and
       (JsPath \ "name").read[String] and
       (JsPath \ "slug").read[String] and
-      (JsPath \ "color" \ "code").read[Short].map(Category.Color.apply)
+      (JsPath \ "color" \ "code").read[Category.Color]
   )(Category.createEmbeddedId _)
 }

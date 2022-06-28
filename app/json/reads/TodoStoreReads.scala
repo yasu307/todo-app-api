@@ -5,8 +5,9 @@ import lib.model.{ Category, Todo }
 import play.api.libs.functional.syntax.toFunctionalBuilderOps
 
 object TodoStoreReads {
+  import EnvReads._
   implicit val todoStoreReads: Reads[Todo.WithNoId] = (
-    (JsPath \ "categoryId").read[Long].map(Category.Id.apply) and
+    (JsPath \ "categoryId").read[Category.Id] and
       (JsPath \ "title").read[String] and
       (JsPath \ "body").read[String]
   )(Todo.createWithNoId _)
