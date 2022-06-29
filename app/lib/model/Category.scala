@@ -42,7 +42,12 @@ object Category {
   // 前は存在していたが現在は削除されたカテゴリのidを表す変数
   // todoが"どのカテゴリにも紐づいていない"ことを表すために用いる
   // to_doテーブルの設定によりnullや0以下の値は設定できないため、一番使用される可能性が低いLong.MaxValueを用いる
-  final val deletedId = Category.Id(Long.MaxValue)
+//  final val deletedId = Category.Id(Long.MaxValue)
+  //////////////////// 上記の変数を下に変換
+  // 上記の値はTypeScriptのnumber型では安全に扱えないため、安全に扱える最大の値を指定する
+  // TypeScript上でidをBigint型に格納すれば上記の値でも問題はないが、
+  // TypeScriptコードを書き換えたり、Playのjson.writesも書き換える必要が出てくるのでとりあえず下記の値にする
+  final val deletedId = Category.Id(9007199254740991L)
 
   // WithNoIdを作成するメソッド
   def apply(name: String, slug: String, color: Category.Color): WithNoId = {
