@@ -53,7 +53,11 @@ class CategoryApiController @Inject() (val controllerComponents: ControllerCompo
           val dbAction = for {
             result <- CategoryRepository.update(category)
           } yield {
-            Ok(Json.toJson(result))
+            result match {
+              // リクエストから受け取ったcategoryのidプロパティに対応するcategoryが存在しなかった場合
+              case None    => NotFound(Json.toJson(s"No category with id ${category.id.toLong}"))
+              case Some(_) => Ok(Json.toJson(result))
+            }
           }
           dbAction.recoverServerError
         }
@@ -66,7 +70,11 @@ class CategoryApiController @Inject() (val controllerComponents: ControllerCompo
     val dbAction = for {
       result <- CategoryRepository.removeCategoryAndUpdateRelatedTodos(Category.Id(categoryId))
     } yield {
-      Ok(Json.toJson(result))
+      result match {
+        // リクエストから受け取ったcategoryIdに対応するcategoryが存在しなかった場合
+        case None    => NotFound(Json.toJson(s"No category with id ${categoryId}"))
+        case Some(_) => Ok(Json.toJson(result))
+      }
     }
     dbAction.recoverServerError
   }
