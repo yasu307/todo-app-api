@@ -8,7 +8,7 @@ import play.api.data.Forms._
 case class TodoFormData(
   categoryId: Category.Id,
   title:      String,
-  body:       String
+  body:       Option[String]
 )
 
 object TodoFormData {
@@ -17,7 +17,7 @@ object TodoFormData {
     mapping(
       "categoryId" -> longNumber.transform[Category.Id](l => Category.Id(l), _.toLong),
       "title"      -> nonEmptyText(maxLength = 255),
-      "body"       -> text()
+      "body"       -> optional(text)
     )(TodoFormData.apply)(TodoFormData.unapply)
   )
 }

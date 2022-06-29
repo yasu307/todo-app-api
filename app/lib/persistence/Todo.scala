@@ -51,7 +51,7 @@ case class TodoRepository[P <: JdbcProfile]()(implicit val driver: P)
         _   <- old match {
           case None    => DBIO.successful(0)
           case Some(_) => row
-              .map(p => (p.categoryId, p.title, p.body, p.state))
+              .map(p => (p.categoryId, p.title, p.body ?, p.state))
               .update(entity.v.categoryId, entity.v.title, entity.v.body, entity.v.state)
         }
       } yield old

@@ -12,7 +12,7 @@ case class Todo(
   id:         Option[Id],
   categoryId: Category.Id,
   title:      String,
-  body:       String,
+  body:       Option[String],
   state:      Status,
   updatedAt:  LocalDateTime = NOW,
   createdAt:  LocalDateTime = NOW
@@ -36,7 +36,7 @@ object Todo {
   }
 
   // INSERT時のIDがAutoincrementのため,IDなしであることを示すオブジェクトに変換
-  def apply(categoryId: Category.Id, title: String, body: String): WithNoId = {
+  def apply(categoryId: Category.Id, title: String, body: Option[String]): WithNoId = {
     new Entity.WithNoId(
       new Todo(
         id         = None,
@@ -49,7 +49,7 @@ object Todo {
   }
 
   // EmbeddedIdを作成するメソッド
-  def apply(todoId: Todo.Id, categoryId: Category.Id, title: String, body: String, state: Todo.Status): EmbeddedId = {
+  def apply(todoId: Todo.Id, categoryId: Category.Id, title: String, body: Option[String], state: Todo.Status): EmbeddedId = {
     new Todo(
       id         = Some(todoId),
       categoryId = categoryId,

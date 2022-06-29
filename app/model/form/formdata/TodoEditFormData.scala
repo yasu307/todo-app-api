@@ -12,7 +12,7 @@ import play.api.data.Forms._
 case class TodoEditFormData(
   categoryId: Category.Id,
   title:      String,
-  body:       String,
+  body:       Option[String],
   state:      Todo.Status,
 )
 
@@ -22,7 +22,7 @@ object TodoEditFormData {
     mapping(
       "categoryId" -> longNumber.transform[Category.Id](l => Category.Id(l), _.toLong),
       "title"      -> nonEmptyText(maxLength = 255),
-      "body"       -> text(),
+      "body"       -> optional(text),
       "state"      -> longNumber.transform[Todo.Status](l => Todo.Status(l.toShort), _.code),
     )(TodoEditFormData.apply)(TodoEditFormData.unapply)
   )

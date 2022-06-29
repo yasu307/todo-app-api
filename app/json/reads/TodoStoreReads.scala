@@ -9,6 +9,6 @@ object TodoStoreReads {
   implicit val todoStoreReads: Reads[Todo.WithNoId] = (
     (JsPath \ "categoryId").read[Category.Id] and
       (JsPath \ "title").read[String] and
-      (JsPath \ "body").read[String]
-  )(Todo(_: Category.Id, _: String, _: String))
+      (JsPath \ "body").readNullable[String]
+  )(Todo(_: Category.Id, _: String, _: Option[String]))
 }
