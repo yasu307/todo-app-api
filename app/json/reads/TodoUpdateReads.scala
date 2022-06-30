@@ -10,7 +10,7 @@ object TodoUpdateReads {
     (JsPath \ "id").read[Todo.Id] and
       (JsPath \ "categoryId").read[Category.Id] and
       (JsPath \ "title").read[String] and
-      (JsPath \ "body").read[String] and
+      (JsPath \ "body").readNullable[String] and
       (JsPath \ "state" \ "code").read[Todo.Status]
-  )(Todo(_: Todo.Id, _: Category.Id, _: String, _: String, _: Todo.Status))
+  )(Todo(_: Todo.Id, _: Category.Id, _: String, _: Option[String], _: Todo.Status))
 }

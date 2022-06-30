@@ -26,7 +26,7 @@ class TodoController @Inject() (val controllerComponents: ControllerComponents)(
       jsSrc  = Seq("main.js")
     )
 
-    val todoWithNoId = Todo(Category.Id(555L), "テキスト", "本文本文本文本文本文本文本文本文")
+    val todoWithNoId = Todo(Category.Id(555L), "テキスト", Some("本文本文本文本文本文本文本文本文"))
     for {
       todoId      <- TodoRepository.add(todoWithNoId)
       todoFromDB  <- TodoRepository.get(Todo.Id(todoId))

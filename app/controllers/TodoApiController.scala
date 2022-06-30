@@ -50,7 +50,11 @@ class TodoApiController @Inject() (val controllerComponents: ControllerComponent
           for {
             result <- TodoRepository.update(todo)
           } yield {
-            Ok(Json.toJson(result))
+            result match {
+              // リクエストから受け取ったtodoのidプロパティに対応するtodoが存在しなかった場合
+              case None    => NotFound(Json.toJson(s"No todo with id ${todo.id.toLong}"))
+              case Some(_) => Ok(Json.toJson(result))
+            }
           }
         }
       }
@@ -62,7 +66,11 @@ class TodoApiController @Inject() (val controllerComponents: ControllerComponent
     for {
       result <- TodoRepository.remove(Todo.Id(todoId))
     } yield {
-      Ok(Json.toJson(result))
+      result match {
+        // リクエストから受け取ったtodoIdに対応するtodoが存在しなかった場合
+        case None    => NotFound(Json.toJson(s"No todo with id ${todoId.toLong}"))
+        case Some(_) => Ok(Json.toJson(result))
+      }
     }
   }
 }

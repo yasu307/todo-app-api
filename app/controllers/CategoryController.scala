@@ -151,9 +151,9 @@ class CategoryController @Inject() (val controllerComponents: ControllerComponen
     } yield {
       result match {
         // categoryIdに該当するcategoryレコードが存在しなかった場合
-        case 0 => NotFound(views.html.Error(ViewValueError.error404))
+        case None => NotFound(views.html.Error(ViewValueError.error404))
         // DB処理が成功した場合
-        case _ => Redirect(routes.CategoryController.list)
+        case _    => Redirect(routes.CategoryController.list)
       }
     }
     // recover内: DBアクセス処理でエラーが発生した場合
