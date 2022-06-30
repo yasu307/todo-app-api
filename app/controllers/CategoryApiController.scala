@@ -1,6 +1,5 @@
 package controllers
 
-import controllers.util.FutureResultConverter.FutureResultConverter
 import json.reads.CategoryStoreReads.categoryStoreReads
 import json.reads.CategoryUpdateReads.categoryUpdateReads
 import lib.persistence.onMySQL.CategoryRepository
@@ -18,12 +17,11 @@ class CategoryApiController @Inject() (val controllerComponents: ControllerCompo
 
   // categoryテーブルのレコード一覧をJson形式で返すメソッド
   def list() = Action async { implicit req =>
-    val dbAction = for {
+    for {
       allCategory <- CategoryRepository.getAll()
     } yield {
       Ok(Json.toJson(allCategory))
     }
-    dbAction.recoverServerError
   }
 
   // categoryレコードを追加するメソッド
@@ -31,12 +29,11 @@ class CategoryApiController @Inject() (val controllerComponents: ControllerCompo
     req.body.validate[Category.WithNoId].fold(
       error => Future.successful(BadRequest(JsError.toJson(error))),
       category => {
-        val dbAction = for {
+        for {
           result <- CategoryRepository.add(category)
         } yield {
           Ok(Json.toJson(result.toLong))
         }
-        dbAction.recoverServerError
       }
     )
   }
@@ -50,7 +47,7 @@ class CategoryApiController @Inject() (val controllerComponents: ControllerCompo
         if (categoryId != category.id.toLong) {
           Future.successful(BadRequest(Json.toJson("URL or Request body is wrong")))
         } else {
-          val dbAction = for {
+          for {
             result <- CategoryRepository.update(category)
           } yield {
             result match {
@@ -59,7 +56,6 @@ class CategoryApiController @Inject() (val controllerComponents: ControllerCompo
               case Some(_) => Ok(Json.toJson(result))
             }
           }
-          dbAction.recoverServerError
         }
       }
     )
@@ -67,7 +63,7 @@ class CategoryApiController @Inject() (val controllerComponents: ControllerCompo
 
   // categoryレコードを削除するメソッド
   def delete(categoryId: Long) = Action async { implicit req =>
-    val dbAction = for {
+    for {
       result <- CategoryRepository.removeCategoryAndUpdateRelatedTodos(Category.Id(categoryId))
     } yield {
       result match {
@@ -76,6 +72,5 @@ class CategoryApiController @Inject() (val controllerComponents: ControllerCompo
         case Some(_) => Ok(Json.toJson(result))
       }
     }
-    dbAction.recoverServerError
   }
 }

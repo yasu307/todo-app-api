@@ -1,6 +1,5 @@
 package controllers
 
-import controllers.util.FutureResultConverter.FutureResultConverter
 import json.writes.TodoWrites.todoWrites
 import json.reads.TodoStoreReads.todoStoreReads
 import json.reads.TodoUpdateReads.todoUpdateReads
@@ -18,12 +17,11 @@ class TodoApiController @Inject() (val controllerComponents: ControllerComponent
 
   // to_doテーブルのレコード一覧をJson形式で返すメソッド
   def list() = Action async { implicit req =>
-    val dbAction = for {
+    for {
       allTodo <- TodoRepository.getAll()
     } yield {
       Ok(Json.toJson(allTodo))
     }
-    dbAction.recoverServerError
   }
 
   // to_doレコードを追加するメソッド
@@ -31,12 +29,11 @@ class TodoApiController @Inject() (val controllerComponents: ControllerComponent
     req.body.validate[Todo.WithNoId].fold(
       error => Future.successful(BadRequest(JsError.toJson(error))),
       todo => {
-        val dbAction = for {
+        for {
           result <- TodoRepository.add(todo)
         } yield {
           Ok(Json.toJson(result.toLong))
         }
-        dbAction.recoverServerError
       }
     )
   }
@@ -50,7 +47,7 @@ class TodoApiController @Inject() (val controllerComponents: ControllerComponent
         if (todoId != todo.id.toLong) {
           Future.successful(BadRequest(Json.toJson("URL or Request body is wrong")))
         } else {
-          val dbAction = for {
+          for {
             result <- TodoRepository.update(todo)
           } yield {
             result match {
@@ -59,7 +56,6 @@ class TodoApiController @Inject() (val controllerComponents: ControllerComponent
               case Some(_) => Ok(Json.toJson(result))
             }
           }
-          dbAction.recoverServerError
         }
       }
     )
@@ -67,7 +63,7 @@ class TodoApiController @Inject() (val controllerComponents: ControllerComponent
 
   // to_doレコードを削除するメソッド
   def delete(todoId: Long) = Action async { implicit req =>
-    val dbAction = for {
+    for {
       result <- TodoRepository.remove(Todo.Id(todoId))
     } yield {
       result match {
@@ -76,6 +72,5 @@ class TodoApiController @Inject() (val controllerComponents: ControllerComponent
         case Some(_) => Ok(Json.toJson(result))
       }
     }
-    dbAction.recoverServerError
   }
 }
